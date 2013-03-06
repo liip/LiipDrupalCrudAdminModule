@@ -1,10 +1,4 @@
 <?php
-
-use Assert\Assertion;
-use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
-use Liip\Drupal\Modules\DrupalConnector\Common;
-use Liip\Drupal\Modules\Registry\Memory\Popo;
-
 /**
  * This module file is required by Drupal to act as entry point to the current module.
  *
@@ -13,6 +7,23 @@ use Liip\Drupal\Modules\Registry\Memory\Popo;
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
+use Assert\Assertion;
+use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
+use Liip\Drupal\Modules\DrupalConnector\Common;
+use Liip\Drupal\Modules\Registry\Memory\Popo;
+
+
+function CrudAdmin_menu()
+{
+    $items = array();
+
+    $items['admin/config/content/crud/%/%'] = array(
+        'title' => 'Foo',
+        'page callback' => ''
+    );
+
+    return $items;
+}
 
 /**
  * Registers a callback function to be invoked.
@@ -56,4 +67,17 @@ function _CrudAdmin_getCallBacksRegistry(Common $dcc, Assertion $assertions)
     }
 
     return $registry;
+}
+
+/**
+ * Enriches the given set of form fields with a set of
+ *
+ * @param array $fields
+ * @return array
+ */
+function generateForm(array $fields)
+{
+    $form = array();
+
+    return $form;
 }

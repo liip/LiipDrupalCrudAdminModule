@@ -4,26 +4,26 @@
  *
  * @author     Bastian Feder <drupal@bastian-feder.de>
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
- * @copyright  Copyright (c) 2012 Liip inc.
+ * @copyright  Copyright (c) 2012 Liip Inc.
  */
 
 
-function DrupalCrudAdminModule_install()
+function CrudAdmin_install()
 {
 
 }
 
-function DrupalCrudAdminModule_uninstall()
+function CrudAdmin_uninstall()
 {
 
 }
 
-function DrupalCrudAdminModule_enable()
+function CrudAdmin_enable()
 {
 
 }
 
-function DrupalCrudAdminModule_disable()
+function CrudAdmin_disable()
 {
 
 }
