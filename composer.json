@@ -29,10 +29,10 @@
     ],
 
     "require": {
-        "php": ">=5.3.8,<5.4",
-        "liip/drupalconnectormodule": "dev-master",
         "beberlei/assert": "dev-master",
-        "liip/drupalregistrymodule": "dev-master"
+        "liip/drupalconnectormodule": "dev-master",
+        "liip/drupalregistrymodule": "dev-master",
+        "php": ">=5.3.8,<5.4"
     },
 
     "require-dev": {
