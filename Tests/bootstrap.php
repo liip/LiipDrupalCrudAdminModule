@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('WATCHDOG_NOTICE')) {
+    define('WATCHDOG_NOTICE', 5);
+}
+
 if (!defined('PROJECT_DIR')) {
     define('PROJECT_DIR', __DIR__ . '/../../../../..');
 }
@@ -25,7 +29,7 @@ if (file_exists($moduleDir . "/vendor/autoload.php")) {
 
 $loader->addClassMap(
     array(
-        'netmigrosintranet\modules\DrupalCrudAdminModule\Tests\CrudAdminTestCase' => $moduleDir . '/Tests/crudAdminTestCase.php',
+        'Liip\Drupal\Modules\DrupalCrudAdminModule\Tests\CrudAdminTestCase' => $moduleDir . '/Tests/crudAdminTestCase.php',
     )
 );
 

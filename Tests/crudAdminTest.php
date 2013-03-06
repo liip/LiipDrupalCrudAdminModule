@@ -9,7 +9,7 @@ class DrupalCrudAdminModuleTest extends CrudAdminTestCase
         $dcc = $this->getDrupalCommonConnectorMock();
         $assertions = $this->getAssertionObjectMock();
 
-        DrupalCrudAdminModule_registerCallback('submit', 'TuxCallback', $dcc, $assertions);
+        crudAdmin_registerCallback('submit', 'TuxCallback', $dcc, $assertions);
 
 
     }
