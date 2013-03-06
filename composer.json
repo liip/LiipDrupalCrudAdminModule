@@ -1,0 +1,50 @@
+{
+    "name": "liip/drupalcrudaminmodule",
+    "description": "Provides a generic CRUD administration interface for Drupal 7.",
+    "license": "MIT",
+    "minimum-stability": "dev",
+
+    "authors": [
+        {
+            "name": "Bastian Feder",
+            "email": "bastian.feder@liip.ch",
+            "role": "maintainer"
+        },
+        {
+            "name": "Patrick Jezek",
+            "email": "patrick.jezek@liip.ch",
+            "role": "maintainer"
+        }
+    ],
+
+    "config": {
+        "github-protocols": ["https", "http", "git"]
+    },
+
+    "repositories" : [
+        {
+            "type" : "vcs",
+            "url": "git@gitlab.liip.ch:liipdrupalregistrymodule.git"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.8,<5.4",
+        "liip/drupalconnectormodule": "dev-master",
+        "beberlei/assert": "dev-master",
+        "liip/drupalregistrymodule": "dev-master"
+    },
+
+    "require-dev": {
+        "lapistano/proxy-object": "dev-master"
+    },
+
+    "extra": {
+        "installer-paths": {
+            "vendor/liip/{$name}": [
+                "liip/drupalconnectormodule",
+                "liip/drupalregistrymodule"
+            ]
+        }
+    }
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+        bootstrap="Tests/bootstrap.php"
+        strict="true"
+        stopOnError="true"
+        color="true"
+        forceCoversAnnotation="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        >
+
+    <testsuites>
+        <testsuite name="Liip CRUD Admin Module Test Suite">
+            <directory suffix="Test.php">./Tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <log type="coverage-html" target="build/coverage" title="Liip CRUD Admin Module"
+             charset="UTF-8" yui="true" highlight="true"/>
+    </logging>
+
+    <filter>
+        <whitelist>
+            <directory>.</directory>
+            <exclude>
+                <file>*.info</file>
+                <file>*.module</file>
+
+                <directory>Tests</directory>
+                <directory>build</directory>
+
+            </exclude>
+        </whitelist>
+    </filter>
+
+</phpunit>
