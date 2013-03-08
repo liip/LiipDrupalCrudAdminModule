@@ -1,5 +1,6 @@
 # Liip Drupal Crud Admin Module
 
+** NOT USEABLE YET **
 
 ##Current Travis Status
 
