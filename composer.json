@@ -1,6 +1,7 @@
 {
     "name": "liip/drupalcrudaminmodule",
     "description": "Provides a generic CRUD administration interface for Drupal 7.",
+    "type": "drupal-module",
     "license": "MIT",
     "minimum-stability": "dev",
 
