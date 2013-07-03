@@ -12,13 +12,13 @@
         >
 
     <testsuites>
-        <testsuite name="Liip CRUD Admin Module Test Suite">
+        <testsuite name="Liip Drupal CRUD Admin Module Test Suite">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>
 
     <logging>
-        <log type="coverage-html" target="build/coverage" title="Liip CRUD Admin Module"
+        <log type="coverage-html" target="build/coverage" title="Liip Drupal CRUD Admin Module"
              charset="UTF-8" yui="true" highlight="true"/>
     </logging>
 

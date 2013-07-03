@@ -29,9 +29,9 @@ if (file_exists($moduleDir . "/vendor/autoload.php")) {
 
 $loader->addClassMap(
     array(
-        'Liip\Drupal\Modules\DrupalCrudAdminModule\Tests\CrudAdminTestCase' => $moduleDir . '/Tests/crudAdminTestCase.php',
+        'Liip\Drupal\Modules\drupalcrudadminmodule\Tests\CrudAdminModuleTestCase' => $moduleDir . '/Tests/CrudAdminModuleTestCase.php',
     )
 );
 
 // unfortunately procedural stuff is not supported by composer autoloader
-require_once($moduleDir . '/crudAdmin.module');
+require_once($moduleDir . '/drupalcrudadminmodule.module');

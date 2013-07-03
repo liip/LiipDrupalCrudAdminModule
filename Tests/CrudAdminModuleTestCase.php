@@ -1,10 +1,10 @@
 <?php
-namespace Liip\Drupal\Modules\DrupalCrudAdminModule\Tests;
+namespace Liip\Drupal\Modules\drupalcrudadminmodule\Tests;
 
 use Assert\Assertion;
 use lapistano\ProxyObject\ProxyBuilder;
 
-class CrudAdminTestCase extends \PHPUnit_Framework_Testcase
+class CrudAdminModuleTestCase extends \PHPUnit_Framework_Testcase
 {
      /**
      * Provides a stub for the Common class of the DrupalConnector Module.
