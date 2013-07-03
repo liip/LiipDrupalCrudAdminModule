@@ -1,8 +1,8 @@
 <?php
-use Liip\Drupal\Modules\drupalcrudadminmodule\Tests;
+use Liip\Drupal\Modules\drupalcrudadminmodule\Tests\CrudAdminModuleTestCase;
 
 
-class CrudAdminModuleTest extends CrudAdminTestCase
+class CrudAdminModuleTest extends CrudAdminModuleTestCase
 {
     public function testRegisterCallback()
     {

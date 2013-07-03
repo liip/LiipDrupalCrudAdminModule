@@ -13,7 +13,7 @@ use Liip\Drupal\Modules\DrupalConnector\Common;
 use Liip\Drupal\Modules\Registry\Memory\Popo;
 
 
-function CrudAdmin_menu()
+function drupalcrudadminmodule_menu()
 {
     $items = array();
 
@@ -27,17 +27,16 @@ function CrudAdmin_menu()
 
 /**
  * Registers a callback function to be invoked.
- *
  * e.g.
  *   CrudAdmin_registerCallback('submit', 'myModule_formSubmitHook_Callback');
- *
  *   will call »myModule_formSubmitHook_Callback« in case the form was submitted.
  *
  * @param string $type
  * @param string $callback
- * @param Assert\Assertion $assertions
+ *
+ * @internal param \Assert\Assertion $assertions
  */
-function CrudAdmin_registerCallback($type, $callback)
+function drupalcrudadminmodule_registerCallback($type, $callback)
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
     $dcc = ConnectorFactory::getCommonConnector();
@@ -45,7 +44,7 @@ function CrudAdmin_registerCallback($type, $callback)
     /** @var \Assert\Assertion $assertions  */
     $assertions = new Assertion();
 
-    $registry = _CrudAdmin_getCallBacksRegistry($dcc, $assertions);
+    $registry = _drupalcrudadminmodule_getCallBacksRegistry($dcc, $assertions);
     $registry->register($type, $callback);
 }
 
@@ -57,13 +56,13 @@ function CrudAdmin_registerCallback($type, $callback)
  *
  * @return \Liip\Drupal\Modules\Registry\Memory\Popo
  */
-function _CrudAdmin_getCallBacksRegistry(Common $dcc, Assertion $assertions)
+function _drupalcrudadminmodule_getCallBacksRegistry(Common $dcc, Assertion $assertions)
 {
     static $registry;
 
     if (!$registry) {
 
-        $registry = new Popo('registry_CrudModule_callbacks', $dcc, $assertions);
+        $registry = new Popo('registry_CrudAdminModule_callbacks', $dcc, $assertions);
     }
 
     return $registry;
