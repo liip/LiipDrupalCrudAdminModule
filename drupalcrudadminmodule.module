@@ -1,8 +1,4 @@
 <?php
-use Assert\Assertion;
-use Liip\Drupal\Modules\DrupalConnector\Common;
-use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
-use Liip\Drupal\Modules\EventManager\EventManagerException;
 
 /**
  * This module file is required by Drupal to act as entry point to the current module.
@@ -11,12 +7,23 @@ use Liip\Drupal\Modules\EventManager\EventManagerException;
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
+use Assert\Assertion;
+use Liip\Drupal\Modules\DrupalConnector\Common;
+use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
+use Liip\Drupal\Modules\EventManager\EventManagerException;
 
+
+/**
+ * Defines a number of routes.
+ *
+ * Implements the hook_menu.
+ *
+ * @return array
+ */
 function drupalcrudadminmodule_menu()
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory */
     $factory = new ConnectorFactory();
-
     $items = array();
 
     /**
@@ -102,7 +109,7 @@ function drupalcrudadminmodule_theme()
  * @param string $entity
  * @param string $identifier
  * @param string $action
- * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
+ * @param ConnectorFactory $factory
  *
  * @return array
  * @throws InvalidArgumentException
@@ -122,8 +129,8 @@ function drupalcrudadminmodule_controller($module, $entity, $identifier = '', $a
     try {
         switch (strtolower($action)) {
             case 'overview':
-                // display form
-                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.list');
+
+                return drupalcrudadminmodule_overview_page($module, $entity, $identifier, $factory);
                 break;
             case 'add':
                 // display form
@@ -213,7 +220,7 @@ function drupalcrudadminmodule_title_controller($module, $entity, $identifier = 
  * Verifies that the current user has the required permission to access the content.
  *
  * @param string $permission
- * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
+ * @param ConnectorFactory $factory
  *
  * @return bool
  */

@@ -1,7 +1,7 @@
 <?php
 namespace Liip\Drupal\Modules\CrudAdmin\Entity;
 
-interface entityInterface {
+interface EntityInterface {
 
     /**
      * Provides the unique identifier of the entity.
