@@ -2,6 +2,12 @@ name = Liip CRUD Admin Module
 description = This module provides a general administration interface to create, read, update, and delete entities.
 core = 7.x
 package = Liip Drupal Modules
-version = 0.1
+version = 0.5
 
 php = 5.3
+
+files[] = drupalcrudadminmodule.admin.inc
+files[] = drupalcrudadminmodule.helper.inc
+
+dependencies[] = drupaleventmanagermodule
+dependencies[] = LiipDrupalConnectorModule

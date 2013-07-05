@@ -1,0 +1,14 @@
+msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_EDIT"
+msgstr "Modify @entity of Module $module"
+
+msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_DELETE"
+msgstr "Delete @entity (@id) of Module $module"
+
+msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_ADD"
+msgstr "Create @entity of Module @module"
+
+msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_ENTITY_READ"
+msgstr "Detail view of @entity"
+
+msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_OVERVIEW"
+msgstr "Overview over all entities of module $module"

@@ -1,82 +1,237 @@
 <?php
+use Assert\Assertion;
+use Liip\Drupal\Modules\DrupalConnector\Common;
+use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
+use Liip\Drupal\Modules\EventManager\EventManagerException;
+
 /**
  * This module file is required by Drupal to act as entry point to the current module.
- *
  * @author     Bastian Feder <drupal@bastian-feder.de>
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
-use Assert\Assertion;
-use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
-use Liip\Drupal\Modules\DrupalConnector\Common;
-use Liip\Drupal\Modules\Registry\Memory\Popo;
-
 
 function drupalcrudadminmodule_menu()
 {
+    /** @var \Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory */
+    $factory = new ConnectorFactory();
+
     $items = array();
 
+    /**
+     * Route to handle the action listing all entities of a module.
+     *
+     * admin/config/content/crud/<module>/<entity/<action>
+     *
+     * e.g. admin/config/content/organisations/organisation
+     */
     $items['admin/config/content/crud/%/%'] = array(
-        'title' => 'Foo',
-        'page callback' => ''
+        'title callback'   => 'drupalcrudadminmodule_title_controller',
+        'title arguments'  => array(4, 5, '', 'overview', $factory),
+        'page callback'    => 'drupalcrudadminmodule_controller',
+        'page arguments'   => array(4, 5, '', 'overview', $factory),
+        'access callback'  => '_drupalcrudadminmodule_access_controller',
+        'access arguments' => array('access content', $factory),
+    );
+
+    /**
+     * Route to handle actions on an undefined entity.
+     *
+     * admin/config/content/crud/<module>/<entity/<action>
+     *
+     * e.g. admin/config/content/organisations/organisation/add
+     */
+    $items['admin/config/content/crud/%/%/%'] = array(
+        'title callback'   => 'drupalcrudadminmodule_title_controller',
+        'title arguments'  => array(4, 5, '', 6, $factory),
+        'page callback'    => 'drupalcrudadminmodule_controller',
+        'page arguments'   => array(4, 5, '', 6, $factory),
+        'access callback'  => '_drupalcrudadminmodule_access_controller',
+        'access arguments' => array('administer', $factory),
+    );
+
+    /**
+     * Route to handle dedicated actions on an identified entity.
+     *
+     * admin/config/content/crud/<module>/<entity/<entityId>/<action>
+     *
+     * e.g. admin/config/content/organisations/organisation/hey378236hs03kjefr0/edit
+     * e.g. admin/config/content/organisations/organisation/hey378236hs03kjefr0/delete
+     * e.g. admin/config/content/organisations/organisation/hey378236hs03kjefr0/read
+     * e.g. admin/config/content/organisations/organisation/hey378236hs03kjefr0/list
+     */
+    $items['admin/config/content/crud/%/%/%/%'] = array(
+        'title callback'   => 'drupalcrudadminmodule_title_controller',
+        'title arguments'  => array(4, 5, 6, 7, $factory),
+        'description'      => $dcc->t("LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_MODIFY_DESCRIPTION", array('@module' => $module)),
+        'page callback'    => 'drupalcrudadminmodule_controller',
+        'page arguments'   => array(4, 5, 6, 7, $factory),
+        'access callback'  => '_drupalcrudadminmodule_access_controller',
+        'access arguments' => array('administer', $factory),
     );
 
     return $items;
 }
 
 /**
- * Registers a callback function to be invoked.
- * e.g.
- *   CrudAdmin_registerCallback('submit', 'myModule_formSubmitHook_Callback');
- *   will call »myModule_formSubmitHook_Callback« in case the form was submitted.
+ * Defines the properties of every theme to be used by the module.
  *
- * @param string $type
- * @param string $callback
- *
- * @internal param \Assert\Assertion $assertions
- */
-function drupalcrudadminmodule_registerCallback($type, $callback)
-{
-    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
-    $dcc = ConnectorFactory::getCommonConnector();
-
-    /** @var \Assert\Assertion $assertions  */
-    $assertions = new Assertion();
-
-    $registry = _drupalcrudadminmodule_getCallBacksRegistry($dcc, $assertions);
-    $registry->register($type, $callback);
-}
-
-/**
- * Provides the set of callbacks registered in a registry.
- *
- * @param \Liip\Drupal\Modules\DrupalConnector\Common $dcc
- * @param \Assert\Assertion $assertions
- *
- * @return \Liip\Drupal\Modules\Registry\Memory\Popo
- */
-function _drupalcrudadminmodule_getCallBacksRegistry(Common $dcc, Assertion $assertions)
-{
-    static $registry;
-
-    if (!$registry) {
-
-        $registry = new Popo('registry_CrudAdminModule_callbacks', $dcc, $assertions);
-    }
-
-    return $registry;
-}
-
-/**
- * Enriches the given set of form fields with a set of
- *
- * @param array $fields
  * @return array
  */
-function generateForm(array $fields)
+function drupalcrudadminmodule_theme()
 {
-    $form = array();
+    /** @var Liip\Drupal\Modules\DrupalConnector\Common $dcc */
+    $dcc = ConnectorFactory::getCommonConnector();
 
-    return $form;
+    $templatePath = $dcc->drupal_get_path('module', 'drupalcrudadminmodule') . '/templates';
+
+    return array(
+        'drupalcrudadminmodule_confirm_delete' => array(
+            'template'  => 'drupalcrudadminmodule_confirm_delete',
+            'variables' => array('module' => null, 'entity' => null),
+            'path'      => $templatePath,
+        ),
+    );
+}
+
+/**
+ * Action controller to route the incoming requests.
+ *
+ * @param string $module
+ * @param string $entity
+ * @param string $identifier
+ * @param string $action
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
+ *
+ * @return array
+ * @throws InvalidArgumentException
+ */
+function drupalcrudadminmodule_controller($module, $entity, $identifier = '', $action = '', ConnectorFactory $factory = null)
+{
+    // verify if mandatory functions are implemented by the target module.
+    _drupalcrudadminmodule_verify_contract($module, $entity);
+
+
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
+    $dcm = $factory->getModuleConnector();
+
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
+    $dcc = $factory->getCommonConnector();
+
+    try {
+        switch (strtolower($action)) {
+            case 'overview':
+                // display form
+                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.list');
+                break;
+            case 'add':
+                // display form
+                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.create');
+                break;
+            case 'read':
+                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.read');
+                break;
+            case 'edit':
+                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.update');
+                break;
+            case 'delete':
+
+                return drupalcrudadminmodule_delete_form($module, $entity, $identifier);
+            default:
+                throw new InvalidArgumentException("Invalid action ($action) invoked.");
+        }
+    } catch (EventManagerException $e) {
+
+        // todo: use watchdog_exception
+        $dcc->watchdog(
+            'Liip Drupal CRUD Admin Module',
+            $e->getMessage(),
+            array('action' => $action, 'module' => $module, 'module' => $module),
+            WATCHDOG_ERROR
+        );
+    }
+}
+
+/**
+ * Generates the title displayed on the currently shown page.
+ *
+ * @param string $module
+ * @param string $entity
+ * @param string $identifier
+ * @param string $action
+ * @param ConnectorFactory $factory
+ *
+ * @throws InvalidArgumentException
+ * @return string
+ */
+function drupalcrudadminmodule_title_controller($module, $entity, $identifier = '', $action = '', ConnectorFactory $factory = null)
+{
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
+    $dcc = $factory->getCommonConnector();
+
+    switch (strtolower($action)) {
+        case 'overview':
+            $title = $dcc->t(
+                "LIIP_DRUPAL_CRUD_ADMIN_MODULE_OVERVIEW",
+                array('@module' => $module)
+            );
+            break;
+        case 'add':
+            $title = $dcc->t(
+                "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_ADD",
+                array('@module' => $module, '@entity' => $entity)
+            );
+            break;
+        case 'read':
+        case 'list':
+            $title = $dcc->t(
+                "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_ENTITY_READ",
+                array('@module' => $module, '@entity' => $entity, '@id' => $identifier)
+            );
+            break;
+        case 'delete':
+            $title = $dcc->t(
+                "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_DELETE",
+                array('@module' => $module, '@entity' => $entity, '@id' => $identifier)
+            );
+            break;
+        case 'edit':
+            $title = $dcc->t(
+                "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_EDIT",
+                array('@module' => $module, '@entity' => $entity)
+            );
+            break;
+        default:
+            throw new InvalidArgumentException("Invalid action ($action) invoked.");
+    }
+
+    return $title;
+}
+
+/**
+ * Verifies that the current user has the required permission to access the content.
+ *
+ * @param string $permission
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
+ *
+ * @return bool
+ */
+function _drupalcrudadminmodule_access_controller($permission, ConnectorFactory $factory)
+{
+    /** @var \Liip\Drupal\Modules\DrupalConnector\User $dcu */
+    $dcu = $factory->getUserConnector();
+
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Bootstrap $dcb */
+    $dcb = $factory->getBootstrapConnector();
+
+    // do not show this menu entry on the administration overview page
+    if ("de/admin/config/content" == $dcb->request_path()) {
+
+        return false;
+    }
+
+
+    // still respect access restrictions on user level
+    return $dcu->user_access($permission);
 }

@@ -22,16 +22,10 @@
         "github-protocols": ["https", "http", "git"]
     },
 
-    "repositories" : [
-        {
-            "type" : "vcs",
-            "url": "git@gitlab.liip.ch:liipdrupalregistrymodule.git"
-        }
-    ],
-
     "require": {
         "beberlei/assert": "dev-master",
         "liip/drupalconnectormodule": "dev-master",
+        "liip/drupaleventmanagermodule": "dev-master",
         "liip/drupalregistrymodule": "dev-master",
         "php": ">=5.3.8,<5.4"
     },
@@ -40,10 +34,17 @@
         "lapistano/proxy-object": "dev-master"
     },
 
+    "autoload": {
+        "psr-0": {
+            "Liip\\Drupal\\Modules\\CrudAdmin": "src"
+        }
+    },
+
     "extra": {
         "installer-paths": {
             "vendor/liip/{$name}": [
                 "liip/drupalconnectormodule",
+                "liip/drupaleventmanagermodule,
                 "liip/drupalregistrymodule"
             ]
         }

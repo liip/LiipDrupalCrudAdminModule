@@ -4,26 +4,104 @@
  *
  * @author     Bastian Feder <drupal@bastian-feder.de>
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
- * @copyright  Copyright (c) 2012 Liip Inc.
+ * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
+use Assert\Assertion;
+use Liip\Drupal\Modules\DrupalConnector\Common;
+use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
+use Liip\Drupal\Modules\EventManager\Registry\D7Config\EventSubjects;
+use Liip\Drupal\Modules\EventManager\SubjectFactory;
+use Liip\Drupal\Modules\Registry\RegistryException;
+use Liip\Drupal\Modules\Registry\RegistryInterface;
 
-function CrudAdmin_install()
+
+/**
+ * Sets up the environment for the module to function porperly
+ *
+ * @see hook_enable()
+ */
+function drupalcrudadminmodule_enable()
 {
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc  */
+    $dcc = ConnectorFactory::getCommonConnector();
 
+    $assertion = new Assertion();
+    $registry = new EventSubjects($dcc, $assertion);
+    $factory = new SubjectFactory($registry, $assertion);
+
+    _drupalcrudadminmodule_initSubject('liip.crudadmin.actions.list', $factory, $dcc);
+    _drupalcrudadminmodule_initSubject('liip.crudadmin.actions.create', $factory, $dcc);
+    _drupalcrudadminmodule_initSubject('liip.crudadmin.actions.read', $factory, $dcc);
+    _drupalcrudadminmodule_initSubject('liip.crudadmin.actions.update', $factory, $dcc);
+    _drupalcrudadminmodule_initSubject('liip.crudadmin.actions.delete', $factory, $dcc);
 }
 
-function CrudAdmin_uninstall()
+/**
+ * Processes cleanup operations so the system stays clean after deactivation of the module.
+ *
+ * @see hook_uninstall()
+ */
+function drupalcrudadminmodule_disable()
 {
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc  */
+    $dcc = ConnectorFactory::getCommonConnector();
 
+    $assertion = new Assertion();
+    $registry = new EventSubjects($dcc, $assertion);
+
+    _drupalcrudadminmodule_unregisterEvent('liip.crudadmin.actions.list', $registry, $dcc);
+    _drupalcrudadminmodule_unregisterEvent('liip.crudadmin.actions.create', $registry, $dcc);
+    _drupalcrudadminmodule_unregisterEvent('liip.crudadmin.actions.read', $registry, $dcc);
+    _drupalcrudadminmodule_unregisterEvent('liip.crudadmin.actions.update', $registry, $dcc);
+    _drupalcrudadminmodule_unregisterEvent('liip.crudadmin.actions.delete', $registry, $dcc);
 }
 
-function CrudAdmin_enable()
+/**
+ * Removes event from registry.
+ *
+ * @param string $eventName
+ * @param RegistryInterface $registry
+ * @param Common $dcc
+ */
+function _drupalcrudadminmodule_unregisterEvent($eventName, RegistryInterface $registry, Common $dcc)
 {
+    try {
 
+        $registry->unregister($eventName);
+
+    } catch (RegistryException $e) {
+        $dcc->watchdog(
+            'Liip Drupal CRUD Admin Module',
+            $e->getMessage(),
+            array('event' => $eventName, 'registry' => $registry),
+            WATCHDOG_WARNING
+        );
+        return;
+    }
+
+    $dcc->watchdog(
+        'Liip Drupal CRUD Admin Module',
+        'Event successfully removed: ' . $eventName,
+        null,
+        WATCHDOG_NOTICE
+    );
 }
 
-function CrudAdmin_disable()
+/**
+ * Creates an event to be emmitted somewhen.
+ *
+ * @param string $eventName
+ * @param SubjectFactory $factory
+ * @param Common $dcc
+ */
+function _drupalcrudadminmodule_initSubject($eventName, SubjectFactory $factory, Common $dcc)
 {
-
+    $factory->initSubject($eventName);
+    $dcc->watchdog(
+        'Liip Drupal CRUD Admin Module',
+        'Event subject successfully registered: ' . $eventName,
+        null,
+        WATCHDOG_NOTICE
+    );
 }
