@@ -1,6 +1,7 @@
 <?php
 
 use Liip\Drupal\Modules\CrudAdmin\Entity\EntityInterface;
+use Liip\Drupal\Modules\DrupalConnector\Common;
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
 
 
@@ -175,22 +176,44 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
         }
     }
 
-
-    // todo: since the header fields will differ when the custom hook was used, the header should be generated from
-    //       the $rows array (keys identify the header fields)
-    $variables = array(
-        'header' => array(
-            $dcc->t('Title'),
-            $dcc->t('Description'),
-            $dcc->t('actions'),
-        ),
-        'empty'  => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('@entity' => $entityName)),
-        'rows'   => $rows,
-    );
-
     $form['overview'] = array(
-        '#markup' => $dct->theme('table', $variables),
+        '#markup' => $dct->theme(
+            'table',
+            _drupalcrudadminmodule_generate_table_header_variables($rows, $entityName, $dcc)
+        ),
     );
 
     return $form;
+}
+
+/**
+ * Generates the variable set to be used by the table theme.
+ *
+ * @param array $rows
+ * @param string $entityName
+ * @param Common $dcc
+ *
+ * @return array
+ */
+function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $entityName, Common $dcc)
+{
+    $header = array(
+        $dcc->t('Title'),
+        $dcc->t('Description'),
+        $dcc->t('actions'),
+    );
+
+    if (!empty($rows)) {
+        $header = array();
+
+        foreach (array_keys($rows[0]) as $columnTitle) {
+            $header[] = $dcc->t(ucfirst($columnTitle));
+        }
+    }
+
+    return  array(
+        'header' => $header,
+        'empty'  => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('@entity' => $entityName)),
+        'rows'   => $rows,
+    );
 }
