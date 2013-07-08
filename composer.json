@@ -44,7 +44,7 @@
         "installer-paths": {
             "vendor/liip/{$name}": [
                 "liip/drupalconnectormodule",
-                "liip/drupaleventmanagermodule,
+                "liip/drupaleventmanagermodule",
                 "liip/drupalregistrymodule"
             ]
         }
