@@ -1,4 +1,12 @@
 <?php
+/**
+ * This module file introduces mandatory functions to handle administrative tasks.
+ *
+ * @author     Bastian Feder <drupal@bastian-feder.de>
+ * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright  Copyright (c) 2013 Liip Inc.
+ */
+
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
 
 /**

@@ -1,9 +1,14 @@
 <?php
-
+/**
+ * Test suite to ensure correct functionallity of the module.
+ *
+ * @author     Bastian Feder <drupal@bastian-feder.de>
+ * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @copyright  Copyright (c) 2013 Liip Inc.
+ */
 
 use Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface;
 use Liip\Drupal\Modules\drupalcrudadminmodule\Tests\CrudAdminModuleTestCase;
-use Symfony\Component\Finder\Tests\Iterator\InnerNameIterator;
 
 class CrudAdminModuleTest extends CrudAdminModuleTestCase
 {
