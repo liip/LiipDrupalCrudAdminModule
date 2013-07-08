@@ -21,7 +21,7 @@ Add the following lines to your `composer.json` file and update your project's c
 ```json
 {
     "require": {
-       "liip/liipdrupalcrudadminmodule": "dev-master"
+       "liip/drupalcrudadminmodule": "dev-master"
     }
 }
 ```
