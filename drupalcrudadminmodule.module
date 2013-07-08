@@ -29,7 +29,7 @@ function drupalcrudadminmodule_menu()
     /**
      * Route to handle the action listing all entities of a module.
      *
-     * admin/config/content/crud/<module>/<entity/<action>
+     * admin/config/content/crud/<module>/<entity>
      *
      * e.g. admin/config/content/organisations/organisation
      */
@@ -114,10 +114,10 @@ function drupalcrudadminmodule_theme()
  * @return array
  * @throws InvalidArgumentException
  */
-function drupalcrudadminmodule_controller($module, $entity, $identifier = '', $action = '', ConnectorFactory $factory = null)
+function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '', $action = '', ConnectorFactory $factory = null)
 {
     // verify if mandatory functions are implemented by the target module.
-    _drupalcrudadminmodule_verify_contract($module, $entity);
+    _drupalcrudadminmodule_verify_contract($module, $entity, $factory);
 
 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
@@ -130,18 +130,38 @@ function drupalcrudadminmodule_controller($module, $entity, $identifier = '', $a
         switch (strtolower($action)) {
             case 'overview':
 
-                return drupalcrudadminmodule_overview_page($module, $entity, $identifier, $factory);
-                break;
-            case 'add':
-                // display form
-                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.create');
-                break;
+                return drupalcrudadminmodule_page(
+                    'drupalcrudadminmodule_overview_table',
+                    $module,
+                    $entity,
+                    $identifier,
+                    $factory
+                );
             case 'read':
+
                 $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.read');
                 break;
+            case 'add':
+
+                $form =  drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, $identifier, $factory);
+                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.create');
+
+                return $form;
             case 'edit':
-                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.update');
-                break;
+
+                $form =  drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, $identifier, $factory);
+                $factory
+                    ->getModuleConnector()
+                    ->module_invoke(
+                        'drupaleventmanagermodule',
+                        'trigger',
+                        'liip.crudadmin.actions.update',
+                        $moduleName,
+                        $entityName,
+                        $identifier
+                    );
+
+                return $form;
             case 'delete':
 
                 return drupalcrudadminmodule_delete_form($module, $entity, $identifier);

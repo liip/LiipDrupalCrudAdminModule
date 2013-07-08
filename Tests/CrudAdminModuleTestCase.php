@@ -6,11 +6,38 @@ use lapistano\ProxyObject\ProxyBuilder;
 
 class CrudAdminModuleTestCase extends \PHPUnit_Framework_Testcase
 {
+    /**
+     * Provides a stub for the Factory class of the DrupalConnector Module.
+     *
+     * @param array $methods
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Liip\Drupal\Modules\DrupalConnector\ConnectorFactory
+     */
+    protected function getDrupalConnectorFactoryMock(array $methods = array())
+    {
+        return $this->getMockBuilder('\\Liip\\Drupal\\Modules\\DrupalConnector\\ConnectorFactory')
+            ->setMethods($methods)
+            ->getMock();
+    }
+
+     /**
+     * Provides a stub for the Module class of the DrupalConnector Module.
+     *
+     * @param array $methods
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Liip\Drupal\Modules\DrupalConnector\Module
+     */
+    protected function getDrupalModuleConnectorMock(array $methods = array())
+    {
+        return $this->getMockBuilder('\\Liip\\Drupal\\Modules\\DrupalConnector\\Module')
+            ->setMethods($methods)
+            ->getMock();
+    }
+
      /**
      * Provides a stub for the Common class of the DrupalConnector Module.
      *
      * @param array $methods
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Liip\Drupal\Modules\DrupalConnector\Common
      */
     protected function getDrupalCommonConnectorMock(array $methods = array())
     {
@@ -23,7 +50,7 @@ class CrudAdminModuleTestCase extends \PHPUnit_Framework_Testcase
      * Provides a fixture of the Common class of the Drupal Connector
      *
      * @param array $methods
-     * @return  \PHPUnit_Framework_MockObject_MockObject
+     * @return  \PHPUnit_Framework_MockObject_MockObject|\Liip\Drupal\Modules\DrupalConnector\Common
      */
     protected function getDrupalCommonConnectorFixture(array $methods = array())
     {
@@ -66,7 +93,7 @@ class CrudAdminModuleTestCase extends \PHPUnit_Framework_Testcase
      * Provides a stub of the \Assert\Assertion class;
      *
      * @param array $methods
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject|\Assert\Assertion
      */
     protected function getAssertionObjectMock(array $methods = array())
     {

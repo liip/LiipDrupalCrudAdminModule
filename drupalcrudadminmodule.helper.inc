@@ -1,6 +1,6 @@
 <?php
 
-use Liip\Drupal\Modules\CrudAdmin\Entity\EntityInterface;
+use Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface;
 use Liip\Drupal\Modules\DrupalConnector\Common;
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
 
@@ -20,21 +20,51 @@ function _drupalcrudadminmodule_getDestination($moduleName)
 }
 
 /**
+ * Determines, if the mandatory CRUD section is available in the form.
+ *
+ * @param array $form
+ * @param array $mandatory
+ *
+ * @throws RuntimeException
+ */
+function _drupalcrudadminmodule_verify_form(array $form, array $mandatory)
+{
+    $messages = array();
+
+    if (empty($form['crud'])) {
+        $message[] = 'Entire section ("crud") is missing.';
+    } else {
+
+        foreach ($mandatory as $field) {
+
+            if (empty($form['crud']['#' . $field])) {
+                $message[] = "No $field set in form.";
+            }
+        }
+    }
+
+    if (!empty($messages)) {
+
+        throw new RuntimeException(implode(', ', $messages));
+    }
+}
+
+/**
  * Verifies that the related module provides the mandatory functions.
  *
  * @param string $moduleName
  * @param string $entityName
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
- * @throws LogicException in case the target module does not implement the mandatory functions.
+ * @throws LogicException
  */
-function _drupalcrudadminmodule_verify_contract($moduleName, $entityName)
+function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, ConnectorFactory $factory)
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
-    $dcm = ConnectorFactory::getModuleConnector();
+    $dcm = $factory->getModuleConnector();
 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
     $dcc = $factory->getCommonConnector();
-
 
     $error = array();
     $warning = array();
@@ -51,14 +81,26 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName)
         $error[] = "Function delete${entityName} does not exist." . PHP_EOL;
     }
 
-    if (in_array(class_implements($entityName), array('\Liip\Drupal\Modules\CrudAdmin\Entity\EntityInterface'))) {
-        $error[] = "Entity ($entityName) does not implement mandatory interface ".
-            '(\Liip\Drupal\Modules\CrudAdmin\Entity\EntityInterface.' . PHP_EOL;
+    if (!$dcm->module_hook($moduleName, "get${moduleName}")) {
+        $error[] = "Function get${moduleName} does not exist." . PHP_EOL;
     }
 
-    // this function is not mandatory if the base entity schema is suitable to generate the overview table.
+    if (!$dcm->module_hook($moduleName, "submitHandler")) {
+        $error[] = "Function submitHandler does not exist." . PHP_EOL;
+    }
+
+    if (in_array(class_implements($entityName), array('\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface'))) {
+        $error[] = "Entity ($entityName) does not implement mandatory interface ".
+            '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL;
+    }
+
+    // the following function are not mandatory since this module covers for them using default implementations.
+    if (!$dcm->module_hook($moduleName, "generateEditForm")) {
+        $warning[] = "generateEditForm";
+    }
+
     if (!$dcm->module_hook($moduleName, "generateOverviewTable")) {
-        $warning[] = "Function delete${entityName} does not exist." . PHP_EOL;
+        $warning[] = "generateOverviewTable";
     }
 
     if (!empty($warning)) {
@@ -66,6 +108,7 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName)
             $moduleName,
             sprintf(
                 'Related module (%s) does not implement some optional functions. Missing functions: %s' . PHP_EOL,
+                $moduleName,
                 implode(', ', $warning)
             ),
             array(),
@@ -78,6 +121,7 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName)
             sprintf(
                 'Related module (%s) does not implement the mandatory functions '.
                 'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
+                $moduleName,
                 implode(', ', $error)
             )
         );
@@ -88,7 +132,7 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName)
  * Gathers necessary information to display a set of entities as HTML table.
  *
  * @param string $moduleName
- * @param EntityInterface $entity
+ * @param \Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
  *
  * @return array
  *
@@ -200,7 +244,7 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
     $header = array(
         $dcc->t('Title'),
         $dcc->t('Description'),
-        $dcc->t('actions'),
+        $dcc->t('Actions'),
     );
 
     if (!empty($rows)) {
@@ -209,6 +253,8 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
         foreach (array_keys($rows[0]) as $columnTitle) {
             $header[] = $dcc->t(ucfirst($columnTitle));
         }
+
+        $header[] = $dcc->t('Actions');
     }
 
     return  array(
@@ -216,4 +262,91 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
         'empty'  => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('@entity' => $entityName)),
         'rows'   => $rows,
     );
+}
+
+/**
+ * Generates the form to be shown when the entity shall be modufied or a new entity is to be added.
+ *
+ * @param string $moduleName
+ * @param string $entityName
+ * @param string $identifier
+ * @param ConnectorFactory $factory
+ *
+ * @return array
+ */
+function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityName, $identifier, ConnectorFactory $factory)
+{
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
+    $dcc = $factory->getCommonConnector();
+
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
+    $dcm = $factory->getModuleConnector();
+
+    $form = array();
+
+    $entity = $dcm->module_invoke($moduleName, 'get'.$entityName, $identifier);
+
+    if (empty($entity)) {
+        $form['#markup'] = 'NO ENTITY FOUND!';
+        $form['#redirect'] = _drupalcrudadminmodule_getDestination();
+
+        return $form;
+    }
+
+    $form['title'] = array(
+        '#type'          => 'textfield',
+        '#size'          => 60,
+        '#maxlenth'      => 200,
+        '#title'         => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_TITLE'),
+        '#description'   => $dcc->t(
+            'LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_DESCRIPTION',
+            array(
+                '!admin' => $dcc->l(
+                    $dcc->t('standard administration'),
+                    'admin/config/regional/translate/translate'
+                )
+            )
+        ),
+        '#required'      => true,
+        '#default_value' => (!empty($entity->title) ? $entity->title : ''),
+    );
+
+    $form['description'] = array(
+        '#type'          => 'textfield',
+        '#size'          => 30,
+        '#maxlength'     => 60,
+        '#title'         => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_DESCRIPTION_TITLE'),
+        '#required'      => true,
+        '#description'   => $dcc->t(
+            'LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_DESCRIPTION',
+            array(
+                '!admin' => $dcc->l(
+                    $dcc->t('standard administration'),
+                    'admin/config/regional/translate/translate'
+                )
+            )
+        ),
+        '#default_value' => (!empty($entity->description) ? $entity->description : ''),
+    );
+
+    $form['registrationkey'] = array(
+        '#type'          => 'hidden',
+        '#value'         => (!empty($entity->id) ? $entity->id : ''),
+        '#default_value' => (!empty($entity->id) ? $entity->id : ''),
+    );
+
+    $form['submit'] = array(
+        '#type'             => 'submit',
+        '#value'            => $dcc->t('Save'),
+        '#submit'           => array('drupalcrudadminmodule_edit_form_submit'),
+        '#connectorFactory' => $factory,
+    );
+
+    $form['cancel'] = array(
+        "#markup" => $dcc->l($dcc->t('Cancel'), _drupalcrudadminmodule_getDestination())
+    );
+
+    $form['#redirect'] = _drupalcrudadminmodule_getDestination();
+
+    return $form;
 }
