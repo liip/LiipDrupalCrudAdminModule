@@ -16,10 +16,10 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
             $moduleName,
             implode(', ', array(
+                "Function get${moduleName} does not exist." . PHP_EOL,
                 "Function get${entityName}ById does not exist." . PHP_EOL,
                 "Function get${entityName}s does not exist." . PHP_EOL,
                 "Function delete${entityName} does not exist." . PHP_EOL,
-                "Function get${moduleName} does not exist." . PHP_EOL,
                 "Function submitHandler does not exist." . PHP_EOL,
                 "Entity ($entityName) does not implement mandatory interface " . '(\Liip\Drupal\Modules\CrudAdmin\Entity\EntityInterface).' . PHP_EOL
             ))
@@ -70,13 +70,13 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             ->expects($this->exactly(7))
             ->method('module_hook')
             ->will($this->onConsecutiveCalls(
-                true,
-                true,
-                true,
-                true,
-                true,
                 null,
-                null
+                null,
+                true,
+                true,
+                true,
+                true,
+                true
             ));
 
         $factory = $this->getDrupalConnectorFactoryMock(array('getModuleConnector', 'getCommonConnector'));

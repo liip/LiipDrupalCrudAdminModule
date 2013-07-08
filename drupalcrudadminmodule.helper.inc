@@ -3,6 +3,7 @@
 use Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface;
 use Liip\Drupal\Modules\DrupalConnector\Common;
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
+use Liip\Drupal\Modules\DrupalConnector\Module;
 
 
 /**
@@ -66,41 +67,82 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, Connec
     /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
     $dcc = $factory->getCommonConnector();
 
+    _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleName, $dcc, $dcm);
+    _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleName, $entityName, $dcc, $dcm);
+}
+
+/**
+ * Verifies the existeance of a set of mandatory callbacks to be defined by the consumer of the module.
+ *
+ * @param string $moduleName
+ * @param string $entityName
+ * @param Common $dcc
+ * @param Module $dcm
+ *
+ * @throws LogicException
+ */
+function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleName, $entityName, Common $dcc, Module $dcm)
+{
+
     $error = array();
-    $warning = array();
+    $mandatory = array(
+        "get${moduleName}",
+        "get${entityName}ById",
+        "get${entityName}s",
+        "delete${entityName}",
+        "submitHandler",
+    );
 
-    if (!$dcm->module_hook($moduleName, "get${entityName}ById")) {
-        $error[] = "Function get${entityName}ById does not exist." . PHP_EOL;
-    }
+    foreach ($mandatory aS $func) {
 
-    if (!$dcm->module_hook($moduleName, "get${entityName}s")) {
-        $error[] = "Function get${entityName}s does not exist." . PHP_EOL;
-    }
-
-    if (!$dcm->module_hook($moduleName, "delete${entityName}")) {
-        $error[] = "Function delete${entityName} does not exist." . PHP_EOL;
-    }
-
-    if (!$dcm->module_hook($moduleName, "get${moduleName}")) {
-        $error[] = "Function get${moduleName} does not exist." . PHP_EOL;
-    }
-
-    if (!$dcm->module_hook($moduleName, "submitHandler")) {
-        $error[] = "Function submitHandler does not exist." . PHP_EOL;
+        if (!$dcm->module_hook($moduleName, $func)) {
+            $error[] = sprintf(
+                "Function %s does not exist." . PHP_EOL,
+                $func
+            );
+        }
     }
 
     if (in_array(class_implements($entityName), array('\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface'))) {
-        $error[] = "Entity ($entityName) does not implement mandatory interface ".
+        $error[] = "Entity ($entityName) does not implement mandatory interface " .
             '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL;
     }
 
-    // the following function are not mandatory since this module covers for them using default implementations.
-    if (!$dcm->module_hook($moduleName, "generateEditForm")) {
-        $warning[] = "generateEditForm";
+    if (!empty($error)) {
+        throw new LogicException(
+            sprintf(
+                'Related module (%s) does not implement the mandatory functions ' .
+                'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
+                $moduleName,
+                implode(', ', $error)
+            )
+        );
     }
+}
 
-    if (!$dcm->module_hook($moduleName, "generateOverviewTable")) {
-        $warning[] = "generateOverviewTable";
+/**
+ * Verifies the existance of a set of optional call back functions maybe available in the consuming module.
+ * These functions will then be used instead of the default function.
+ *
+ * @param string $moduleName
+ * @param \Liip\Drupal\Modules\DrupalConnector\Common $dcc
+ * @param \Liip\Drupal\Modules\DrupalConnector\Module $dcm
+ */
+function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleName, Common $dcc, Module $dcm)
+{
+    $warning = array();
+
+    // optionl are not mandatory, since this module covers for them using default implementations.
+    $optional = array(
+        "generateEditForm",
+        "generateOverviewTable"
+    );
+
+    foreach ($optional aS $func) {
+
+        if (!$dcm->module_hook($moduleName, $func)) {
+            $warning[] = $func;
+        }
     }
 
     if (!empty($warning)) {
@@ -115,17 +157,6 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, Connec
             WATCHDOG_WARNING
         );
     }
-
-    if (!empty($error)) {
-        throw new LogicException(
-            sprintf(
-                'Related module (%s) does not implement the mandatory functions '.
-                'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
-                $moduleName,
-                implode(', ', $error)
-            )
-        );
-    }
 }
 
 /**
@@ -135,7 +166,6 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, Connec
  * @param \Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
  *
  * @return array
- *
  * @todo: use callback function to delegate generation to target module
  */
 function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInterface $entity)
@@ -257,7 +287,7 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
         $header[] = $dcc->t('Actions');
     }
 
-    return  array(
+    return array(
         'header' => $header,
         'empty'  => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('@entity' => $entityName)),
         'rows'   => $rows,
@@ -284,7 +314,7 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
 
     $form = array();
 
-    $entity = $dcm->module_invoke($moduleName, 'get'.$entityName, $identifier);
+    $entity = $dcm->module_invoke($moduleName, 'get' . $entityName, $identifier);
 
     if (empty($entity)) {
         $form['#markup'] = 'NO ENTITY FOUND!';
