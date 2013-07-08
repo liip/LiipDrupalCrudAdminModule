@@ -1,5 +1,5 @@
 <?php
-namespace Liip\Drupal\Modules\CrudAdmin\Entity;
+namespace Liip\Drupal\Modules\CrudAdmin\Entities;
 
 interface EntityInterface {
 
