@@ -26,14 +26,14 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
                 "Function get${entityName}s does not exist." . PHP_EOL,
                 "Function delete${entityName} does not exist." . PHP_EOL,
                 "Function submitHandler does not exist." . PHP_EOL,
-                "Entity ($entityName) does not implement mandatory interface " . '(\Liip\Drupal\Modules\CrudAdmin\Entity\EntityInterface).' . PHP_EOL
+                "Entity ($entityName) does not implement mandatory interface " . '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL
             ))
         );
 
         $dcc = $this->getDrupalCommonConnectorMock();
         $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));
         $dcm
-            ->expects($this->exactly(7))
+            ->expects($this->exactly(9))
             ->method('module_hook')
             ->will($this->returnValue(null));
 
@@ -57,7 +57,9 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
 
         $moduleName = 'specialtestmodule';
         $entityName = 'entityforspecialtestmodule';
-        $message = 'Related module (specialtestmodule) does not implement some optional functions. Missing functions: generateEditForm, generateOverviewTable' . PHP_EOL;
+        $message = 'Related module (specialtestmodule) does not implement some optional functions. '.
+            'Missing functions: generateEditForm, generateOverviewTable, menu_access_controller, '.
+            'create_entity_table_row'. PHP_EOL;
 
         $dcc = $this->getDrupalCommonConnectorMock();
         $dcc
@@ -72,9 +74,11 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
 
         $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));
         $dcm
-            ->expects($this->exactly(7))
+            ->expects($this->exactly(9))
             ->method('module_hook')
             ->will($this->onConsecutiveCalls(
+                null,
+                null,
                 null,
                 null,
                 true,

@@ -14,7 +14,13 @@ msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_OVERVIEW"
 msgstr "Overview over all entities of module $module"
 
 msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY"
-msgstr "No @enity currently defined."
+msgstr "No %SSentity currently defined."
 
 msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_DESCRIPTION"
 msgstr "Enter the translation key pointing to title of the entity. The translation shall be added/modified using the standard !admin of Drupal."
+
+msgid 'LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_TITLE'
+msgstr "Title of the %entity"
+
+msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_DESCRIPTION_TITLE"
+msgstr "Description"

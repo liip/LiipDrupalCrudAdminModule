@@ -83,8 +83,8 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, Connec
  *
  * @param string $moduleName
  * @param string $entityName
- * @param Common $dcc
- * @param Module $dcm
+ * @param Liip\Drupal\Modules\DrupalConnector\Common $dcc
+ * @param Liip\Drupal\Modules\DrupalConnector\Module $dcm
  *
  * @throws LogicException
  */
@@ -142,7 +142,9 @@ function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleNa
     // optionl are not mandatory, since this module covers for them using default implementations.
     $optional = array(
         "generateEditForm",
-        "generateOverviewTable"
+        "generateOverviewTable",
+        "menu_access_controller",
+        "create_entity_table_row",
     );
 
     foreach ($optional aS $func) {
@@ -170,19 +172,41 @@ function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleNa
  * Gathers necessary information to display a set of entities as HTML table.
  *
  * @param string $moduleName
- * @param \Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
+ * @param Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
+ * @param Liip\Drupal\Modules\DrupalConnector\Common $dcc
+ * @param Liip\Drupal\Modules\DrupalConnector\Module $dcm
  *
  * @return array
- * @todo: use callback function to delegate generation to target module
  */
-function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInterface $entity)
+function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInterface $entity, Common $dcc, Module $dcm)
+{
+    $row = $dcm-module_invoke($moduleName, 'create_entity_table_row', $entity);
+
+    if (empty($row)) {
+        $row = array();
+        $row['title'] = $dcc->t($entity->getTitle());
+        $row['description'] = $dcc->t($entity->getDescription());
+    }
+
+    $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entity, $dcc);
+
+    return $row;
+}
+
+/**
+ * Create the »action« column of the entity overview table.
+ *
+ * @param string $moduleName
+ * @param Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
+ * @param Liip\Drupal\Modules\DrupalConnector\Common $dcc
+ *
+ * @return string
+ */
+function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, EntityInterface $entity, Common $dcc)
 {
     $destination = _drupalcrudadminmodule_getDestination($moduleName);
 
-    $row = array();
-    $rows[$entity->getId()]['title'] = $dcc->t($entity->getTitle());
-    $rows[$entity->getId()]['description'] = $dcc->t($entity->getDescription());
-    $rows[$entity->getId()]['actions'] = sprintf(
+    return sprintf(
         '<div class="table-item-action-wrapper">%s %s</div>',
         $dcc->l(
             $dcc->t('edit'),
@@ -209,8 +233,6 @@ function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInter
             )
         )
     );
-
-    return $row;
 }
 
 /**
@@ -222,9 +244,10 @@ function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInter
  * @param string $moduleName
  * @param string $entityName
  * @param string $identifier
- * @param ConnectorFactory $factory
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @return array
+ * @see hook_generateOverviewTable((str) $identifier)
  */
 function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
@@ -250,9 +273,9 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
 
         if (!empty($entities)) {
 
-            /** @var Liip\Drupal\Modules\CrudAdmin\Entity\EntityInterface $entity */
+            /** @var Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity */
             foreach ($entities as $registrationKey => $entity) {
-                $rows[] = _drupalcrudadminmodule_create_entity_table_row($moduleName, $entity);
+                $rows[$entity->getId()] = _drupalcrudadminmodule_create_entity_table_row($moduleName, $entity, $dcc, $dcm);
             }
         }
     }
@@ -272,7 +295,7 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
  *
  * @param array $rows
  * @param string $entityName
- * @param Common $dcc
+ * @param Liip\Drupal\Modules\DrupalConnector\Common $dcc
  *
  * @return array
  */
@@ -296,7 +319,7 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
 
     return array(
         'header' => $header,
-        'empty'  => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('@entity' => $entityName)),
+        'empty'  => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('%entity' => $entityName)),
         'rows'   => $rows,
     );
 }
@@ -307,7 +330,7 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
  * @param string $moduleName
  * @param string $entityName
  * @param string $identifier
- * @param ConnectorFactory $factory
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @return array
  */
@@ -324,7 +347,7 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
     $entity = $dcm->module_invoke($moduleName, 'get' . $entityName, $identifier);
 
     if (empty($entity)) {
-        $form['#markup'] = 'NO ENTITY FOUND!';
+        $form['#markup'] = $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('%entity' => $entityName));
         $form['#redirect'] = _drupalcrudadminmodule_getDestination();
 
         return $form;
@@ -334,7 +357,7 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
         '#type'          => 'textfield',
         '#size'          => 60,
         '#maxlenth'      => 200,
-        '#title'         => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_TITLE'),
+        '#title'         => $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_TITLE', array('%entity' => $entityName)),
         '#description'   => $dcc->t(
             'LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_DESCRIPTION',
             array(

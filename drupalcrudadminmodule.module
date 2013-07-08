@@ -1,7 +1,7 @@
 <?php
-
 /**
  * This module file is required by Drupal to act as entry point to the current module.
+ *
  * @author     Bastian Feder <drupal@bastian-feder.de>
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @copyright  Copyright (c) 2013 Liip Inc.
@@ -39,7 +39,7 @@ function drupalcrudadminmodule_menu()
         'page callback'    => 'drupalcrudadminmodule_controller',
         'page arguments'   => array(4, 5, '', 'overview', $factory),
         'access callback'  => '_drupalcrudadminmodule_access_controller',
-        'access arguments' => array('access content', $factory),
+        'access arguments' => array(4, 5, 'access content', $factory),
     );
 
     /**
@@ -55,7 +55,7 @@ function drupalcrudadminmodule_menu()
         'page callback'    => 'drupalcrudadminmodule_controller',
         'page arguments'   => array(4, 5, '', 6, $factory),
         'access callback'  => '_drupalcrudadminmodule_access_controller',
-        'access arguments' => array('administer', $factory),
+        'access arguments' => array(4, 5, 'administer', $factory),
     );
 
     /**
@@ -75,7 +75,7 @@ function drupalcrudadminmodule_menu()
         'page callback'    => 'drupalcrudadminmodule_controller',
         'page arguments'   => array(4, 5, 6, 7, $factory),
         'access callback'  => '_drupalcrudadminmodule_access_controller',
-        'access arguments' => array('administer', $factory),
+        'access arguments' => array(4, 5, 'administer', $factory),
     );
 
     return $items;
@@ -113,12 +113,15 @@ function drupalcrudadminmodule_theme()
  *
  * @return array
  * @throws InvalidArgumentException
+ *
+ * @see drupaleventmanagermodule_trigger()
+ * @see drupalcrudadminmodule_page()
+ * @see drupalcrudadminmodule_delete_form()
  */
 function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '', $action = '', ConnectorFactory $factory = null)
 {
     // verify if mandatory functions are implemented by the target module.
     _drupalcrudadminmodule_verify_contract($module, $entity, $factory);
-
 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
     $dcm = $factory->getModuleConnector();
@@ -143,7 +146,7 @@ function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '
                 break;
             case 'add':
 
-                $form =  drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, $identifier, $factory);
+                $form =  drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, '', $factory);
                 $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.create');
 
                 return $form;
@@ -239,12 +242,18 @@ function drupalcrudadminmodule_title_controller($module, $entity, $identifier = 
 /**
  * Verifies that the current user has the required permission to access the content.
  *
+ * Tries to invoke the hook_menu_access_controller() on the consuming module and returns its return value if it exists.
+ *
+ * @param string $moduleName
+ * @param string $entityName
  * @param string $permission
  * @param ConnectorFactory $factory
  *
  * @return bool
+ *
+ * @see ${moduleName}_menu_access_controller()
  */
-function _drupalcrudadminmodule_access_controller($permission, ConnectorFactory $factory)
+function _drupalcrudadminmodule_access_controller($moduleName, $entityName, $permission, ConnectorFactory $factory)
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\User $dcu */
     $dcu = $factory->getUserConnector();
@@ -252,12 +261,21 @@ function _drupalcrudadminmodule_access_controller($permission, ConnectorFactory 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Bootstrap $dcb */
     $dcb = $factory->getBootstrapConnector();
 
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
+    $dcm = $factory->getModuleConnector();
+
+
+    $permissions = $dcm->module_invoke($moduleName, 'menu_access_controller', $entityName, $permission);
+
+    if (!empty($permissions)) {
+        return $permissions;
+    }
+
     // do not show this menu entry on the administration overview page
     if ("de/admin/config/content" == $dcb->request_path()) {
 
         return false;
     }
-
 
     // still respect access restrictions on user level
     return $dcu->user_access($permission);
