@@ -4,6 +4,10 @@ if (!defined('WATCHDOG_NOTICE')) {
     define('WATCHDOG_NOTICE', 5);
 }
 
+if (!defined('WATCHDOG_WARNING')) {
+    define('WATCHDOG_WARNING', 4);
+}
+
 if (!defined('PROJECT_DIR')) {
     define('PROJECT_DIR', __DIR__ . '/../../../../..');
 }
@@ -35,3 +39,5 @@ $loader->addClassMap(
 
 // unfortunately procedural stuff is not supported by composer autoloader
 require_once($moduleDir . '/drupalcrudadminmodule.module');
+require_once($moduleDir . '/drupalcrudadminmodule.admin.inc');
+require_once($moduleDir . '/drupalcrudadminmodule.helper.inc');
