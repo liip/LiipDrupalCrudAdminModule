@@ -145,7 +145,6 @@ function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleNa
         "generateEditForm",
         "generateOverviewTable",
         "menuAccessController",
-        "createEntityTableRow",
     );
 
     foreach ($optional aS $func) {
@@ -181,14 +180,9 @@ function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleNa
  */
 function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInterface $entity, Common $dcc, Module $dcm)
 {
-    $row = $dcm->module_invoke($moduleName, 'createEntityTableRow', $entity);
-
-    if (empty($row)) {
-        $row = array();
-        $row['title'] = $dcc->t($entity->getTitle());
-        $row['description'] = $dcc->t($entity->getDescription());
-    }
-
+    $row = array();
+    $row['title'] = $dcc->t($entity->getTitle());
+    $row['description'] = $dcc->t($entity->getDescription());
     $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entity, $dcc);
 
     return $row;

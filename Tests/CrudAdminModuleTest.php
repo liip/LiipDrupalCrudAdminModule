@@ -32,7 +32,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
         $dcc = $this->getDrupalCommonConnectorMock();
         $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));
         $dcm
-            ->expects($this->exactly(8))
+            ->expects($this->exactly(7))
             ->method('module_hook')
             ->will($this->returnValue(null));
 
@@ -57,8 +57,8 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
         $moduleName = 'specialtestmodule';
         $entityName = 'entityforspecialtestmodule';
         $message = 'Related module (specialtestmodule) does not implement some optional functions. '.
-            'Missing functions: generateEditForm, generateOverviewTable, menuAccessController, '.
-            'createEntityTableRow'. PHP_EOL;
+            'Missing functions: generateEditForm, generateOverviewTable, menuAccessController'.
+             PHP_EOL;
 
         $dcc = $this->getDrupalCommonConnectorMock();
         $dcc
@@ -73,10 +73,9 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
 
         $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));
         $dcm
-            ->expects($this->exactly(8))
+            ->expects($this->exactly(7))
             ->method('module_hook')
             ->will($this->onConsecutiveCalls(
-                null,
                 null,
                 null,
                 null,
