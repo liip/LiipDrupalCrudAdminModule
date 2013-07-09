@@ -40,13 +40,13 @@ function _drupalcrudadminmodule_verify_form(array $form, array $mandatory)
     $messages = array();
 
     if (empty($form['crud'])) {
-        $message[] = 'Entire section ("crud") is missing.';
+        $messages[] = 'Entire section ("crud") is missing.';
     } else {
 
         foreach ($mandatory as $field) {
 
             if (empty($form['crud']['#' . $field])) {
-                $message[] = "No $field set in form.";
+                $messages[] = "No $field set in form.";
             }
         }
     }
@@ -92,11 +92,13 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
 {
 
     $error = array();
+    $module = ucfirst($moduleName);
+    $entity = ucfirst($entityName);
     $mandatory = array(
-        "get${moduleName}",
-        "get${entityName}ById",
-        "get${entityName}s",
-        "delete${entityName}",
+        "get${module}",
+        "get${entity}ById",
+        "get${entity}s",
+        "delete${entity}",
         "submitHandler",
     );
 
@@ -143,8 +145,8 @@ function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleNa
     $optional = array(
         "generateEditForm",
         "generateOverviewTable",
-        "menu_access_controller",
-        "create_entity_table_row",
+        "menuAccessController",
+        "createEntityTableRow",
     );
 
     foreach ($optional aS $func) {
@@ -180,7 +182,7 @@ function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleNa
  */
 function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInterface $entity, Common $dcc, Module $dcm)
 {
-    $row = $dcm-module_invoke($moduleName, 'create_entity_table_row', $entity);
+    $row = $dcm->module_invoke($moduleName, 'createEntityTableRow', $entity);
 
     if (empty($row)) {
         $row = array();
@@ -211,7 +213,7 @@ function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, 
         $dcc->l(
             $dcc->t('edit'),
             sprintf(
-                'admin/config/content/%s/%s/%s/edit',
+                'admin/config/content/crud/%s/%s/%s/edit',
                 $moduleName,
                 $entity->getTitle(),
                 $entity->getId()
@@ -223,7 +225,7 @@ function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, 
         $dcc->l(
             $dcc->t('delete'),
             sprintf(
-                'admin/config/content/%s/%s/%s/delete',
+                'admin/config/content/crud/%s/%s/%s/delete',
                 $moduleName,
                 $entity->getTitle(),
                 $entity->getId()

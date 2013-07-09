@@ -41,18 +41,6 @@ function drupalcrudadminmodule_page($callback, $moduleName, $entityName, $identi
  */
 function drupalcrudadminmodule_overview_table(array $form, array $form_state, $moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
-    // make sure the 'liip.crudadmin.actions.list' event is triggered.
-    $factory
-        ->getModuleConnector()
-        ->module_invoke(
-            'drupaleventmanagermodule',
-            'trigger',
-            'liip.crudadmin.actions.list',
-            $moduleName,
-            $entityName,
-            $identifier
-        );
-
     return _drupalcrudadminmodule_generateOverviewTable($form, $moduleName, $entityName, $identifier, $factory);
 }
 
@@ -74,6 +62,7 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
     $dcm = ConnectorFactory::getModuleConnector();
 
     $build = array();
+    $entityName = ucfirst($entityName);
 
     $entity = $dcm->module_invoke($moduleName, "get${entityName}ById", $identifier);
 
@@ -149,7 +138,7 @@ function drupalcrudadminmodule_edit_form(array $form, array $form_state, $module
  */
 function drupalcrudadminmodule_edit_form_submit(array &$form, array &$form_state)
 {
-    // TODO: enhance drupalconnector factory with a singleton method
+    /** @var \Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory */
     $factory = new ConnectorFactory();
 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
@@ -169,5 +158,4 @@ function drupalcrudadminmodule_edit_form_submit(array &$form, array &$form_state
 
     // ask target module to handle the submit action by itself.
     $dcm->module_invoke($moduleName, "submitHandler", $form, $form_state, $factory);
-
 }

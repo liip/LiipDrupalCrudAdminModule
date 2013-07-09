@@ -31,14 +31,14 @@ function drupalcrudadminmodule_menu()
      *
      * admin/config/content/crud/<module>/<entity>
      *
-     * e.g. admin/config/content/organisations/organisation
+     * e.g. admin/config/content/crud/organisations/organisation
      */
     $items['admin/config/content/crud/%/%'] = array(
         'title callback'   => 'drupalcrudadminmodule_title_controller',
         'title arguments'  => array(4, 5, '', 'overview', $factory),
         'page callback'    => 'drupalcrudadminmodule_controller',
         'page arguments'   => array(4, 5, '', 'overview', $factory),
-        'access callback'  => '_drupalcrudadminmodule_access_controller',
+        'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'access content', $factory),
     );
 
@@ -47,14 +47,15 @@ function drupalcrudadminmodule_menu()
      *
      * admin/config/content/crud/<module>/<entity/<action>
      *
-     * e.g. admin/config/content/organisations/organisation/add
+     * e.g. admin/config/content/crud/organisations/organisation/add
+     * e.g. admin/config/content/crud/organisations/organisation/list
      */
     $items['admin/config/content/crud/%/%/%'] = array(
         'title callback'   => 'drupalcrudadminmodule_title_controller',
         'title arguments'  => array(4, 5, '', 6, $factory),
         'page callback'    => 'drupalcrudadminmodule_controller',
         'page arguments'   => array(4, 5, '', 6, $factory),
-        'access callback'  => '_drupalcrudadminmodule_access_controller',
+        'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'administer', $factory),
     );
 
@@ -63,10 +64,9 @@ function drupalcrudadminmodule_menu()
      *
      * admin/config/content/crud/<module>/<entity/<entityId>/<action>
      *
-     * e.g. admin/config/content/organisations/organisation/hey378236hs03kjefr0/edit
-     * e.g. admin/config/content/organisations/organisation/hey378236hs03kjefr0/delete
-     * e.g. admin/config/content/organisations/organisation/hey378236hs03kjefr0/read
-     * e.g. admin/config/content/organisations/organisation/hey378236hs03kjefr0/list
+     * e.g. admin/config/content/crud/organisations/organisation/hey378236hs03kjefr0/edit
+     * e.g. admin/config/content/crud/organisations/organisation/hey378236hs03kjefr0/delete
+     * e.g. admin/config/content/crud/organisations/organisation/hey378236hs03kjefr0/read
      */
     $items['admin/config/content/crud/%/%/%/%'] = array(
         'title callback'   => 'drupalcrudadminmodule_title_controller',
@@ -74,7 +74,7 @@ function drupalcrudadminmodule_menu()
         'description'      => $dcc->t("LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_MODIFY_DESCRIPTION", array('@module' => $module)),
         'page callback'    => 'drupalcrudadminmodule_controller',
         'page arguments'   => array(4, 5, 6, 7, $factory),
-        'access callback'  => '_drupalcrudadminmodule_access_controller',
+        'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'administer', $factory),
     );
 
@@ -132,42 +132,75 @@ function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '
     try {
         switch (strtolower($action)) {
             case 'overview':
+            case 'list':
 
-                return drupalcrudadminmodule_page(
+                $page = drupalcrudadminmodule_page(
                     'drupalcrudadminmodule_overview_table',
                     $module,
                     $entity,
                     $identifier,
                     $factory
                 );
+                $dcm->module_invoke(
+                    'drupaleventmanagermodule',
+                    'trigger',
+                    'liip.crudadmin.actions.list',
+                    $moduleName,
+                    $entityName,
+                    $identifier
+                );
+
+                return $page;
             case 'read':
 
-                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.read');
+                $dcm->module_invoke(
+                    'drupaleventmanagermodule',
+                    'trigger',
+                    'liip.crudadmin.actions.read',
+                    $module,
+                    $entity,
+                    $identifier
+                );
                 break;
             case 'add':
 
                 $form =  drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, '', $factory);
-                $dcm->module_invoke('drupaleventmanagermodule', 'trigger', 'liip.crudadmin.actions.create');
+                $dcm->module_invoke(
+                    'drupaleventmanagermodule',
+                    'trigger',
+                    'liip.crudadmin.actions.create',
+                    $module,
+                    $entity,
+                    $identifier
+                );
 
                 return $form;
             case 'edit':
 
                 $form =  drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, $identifier, $factory);
-                $factory
-                    ->getModuleConnector()
-                    ->module_invoke(
-                        'drupaleventmanagermodule',
-                        'trigger',
-                        'liip.crudadmin.actions.update',
-                        $moduleName,
-                        $entityName,
-                        $identifier
-                    );
+                $dcm->module_invoke(
+                    'drupaleventmanagermodule',
+                    'trigger',
+                    'liip.crudadmin.actions.update',
+                    $module,
+                    $entity,
+                    $identifier
+                );
 
                 return $form;
             case 'delete':
 
-                return drupalcrudadminmodule_delete_form($module, $entity, $identifier);
+                $form = drupalcrudadminmodule_delete_form($module, $entity, $identifier);
+                $dcm->module_invoke(
+                    'drupaleventmanagermodule',
+                    'trigger',
+                    'liip.crudadmin.actions.delete',
+                    $module,
+                    $entity,
+                    $identifier
+                );
+
+                return $form;
             default:
                 throw new InvalidArgumentException("Invalid action ($action) invoked.");
         }
@@ -177,7 +210,7 @@ function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '
         $dcc->watchdog(
             'Liip Drupal CRUD Admin Module',
             $e->getMessage(),
-            array('action' => $action, 'module' => $module, 'module' => $module),
+            array('action' => $action, 'module' => $module, 'entity' => $entity, 'identifier' => $identifier),
             WATCHDOG_ERROR
         );
     }
@@ -253,7 +286,7 @@ function drupalcrudadminmodule_title_controller($module, $entity, $identifier = 
  *
  * @see ${moduleName}_menu_access_controller()
  */
-function _drupalcrudadminmodule_access_controller($moduleName, $entityName, $permission, ConnectorFactory $factory)
+function drupalcrudadminmodule_access_controller($moduleName, $entityName, $permission, ConnectorFactory $factory)
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\User $dcu */
     $dcu = $factory->getUserConnector();
