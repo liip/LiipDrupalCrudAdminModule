@@ -21,12 +21,12 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
             $moduleName,
             implode(', ', array(
-                "Function get${moduleName} does not exist." . PHP_EOL,
-                "Function get${entityName}ById does not exist." . PHP_EOL,
-                "Function get${entityName}s does not exist." . PHP_EOL,
-                "Function delete${entityName} does not exist." . PHP_EOL,
+                "Function getSpecialtestmodule does not exist." . PHP_EOL,
+                "Function getSpecialtestmoduleById does not exist." . PHP_EOL,
+                "Function getStdclasss does not exist." . PHP_EOL,
+                "Function deleteStdclass does not exist." . PHP_EOL,
                 "Function submitHandler does not exist." . PHP_EOL,
-                "Entity ($entityName) does not implement mandatory interface " . '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL
+                "Entity (Stdclass) does not implement mandatory interface " . '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL
             ))
         );
 
@@ -58,8 +58,8 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
         $moduleName = 'specialtestmodule';
         $entityName = 'entityforspecialtestmodule';
         $message = 'Related module (specialtestmodule) does not implement some optional functions. '.
-            'Missing functions: generateEditForm, generateOverviewTable, menu_access_controller, '.
-            'create_entity_table_row'. PHP_EOL;
+            'Missing functions: generateEditForm, generateOverviewTable, menuAccessController, '.
+            'createEntityTableRow'. PHP_EOL;
 
         $dcc = $this->getDrupalCommonConnectorMock();
         $dcc
@@ -143,35 +143,25 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             ),
         );
     }
-}
-
-class entityforspecialtestmodule implements EntityInterface
-{
-    /**
-     * Provides the unique identifier of the entity.
-     * @return mixed
-     */
-    public function getId()
-    {
-        return 42;
-    }
 
     /**
-     * Provides the long description of an entity.
-     * @return string
+     * @dataProvider verifyFormDataprovider
      */
-    public function getDescription()
+    public function testVerifyFormExpectingException($form)
     {
-        return 'description of entityforspecialtestmodule';
+        $mandatory = array('moduleName', 'entityName');
+
+        $this->setExpectedException('RuntimeException');
+
+        _drupalcrudadminmodule_verify_form($form, $mandatory);
+    }
+    public function verifyFormDataprovider()
+    {
+        return array(
+            'mandatory fields are not set' => array(array()),
+            'at least one mandatory field are not set' => array(array('crud' => array('#moduleName' => 'tux'))),
+        );
     }
 
-    /**
-     * Provides the name or title of the entity.
-     * @return string
-     */
-    public function getTitle()
-    {
-        return 'title of entityforspecialtestmodule';
-    }
 
 }
