@@ -40,6 +40,7 @@ function drupalcrudadminmodule_menu()
         'page arguments'   => array(4, 5, '', 'overview', $factory),
         'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'access content', $factory),
+        'file'             => 'drupalcrudadminmodule.admin.inc',
     );
 
     /**
@@ -57,6 +58,7 @@ function drupalcrudadminmodule_menu()
         'page arguments'   => array(4, 5, '', 6, $factory),
         'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'administer', $factory),
+        'file'             => 'drupalcrudadminmodule.admin.inc',
     );
 
     /**
@@ -76,6 +78,7 @@ function drupalcrudadminmodule_menu()
         'page arguments'   => array(4, 5, 6, 7, $factory),
         'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'administer', $factory),
+        'file'             => 'drupalcrudadminmodule.admin.inc',
     );
 
     return $items;
@@ -145,8 +148,8 @@ function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '
                     'drupaleventmanagermodule',
                     'trigger',
                     'liip.crudadmin.actions.list',
-                    $moduleName,
-                    $entityName,
+                    $module,
+                    $entity,
                     $identifier
                 );
 
@@ -190,15 +193,8 @@ function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '
                 return $form;
             case 'delete':
 
+                // find event trigger in function drupalcrudadminmodule_delete_form
                 $form = drupalcrudadminmodule_delete_form($module, $entity, $identifier);
-                $dcm->module_invoke(
-                    'drupaleventmanagermodule',
-                    'trigger',
-                    'liip.crudadmin.actions.delete',
-                    $module,
-                    $entity,
-                    $identifier
-                );
 
                 return $form;
             default:
@@ -288,21 +284,20 @@ function drupalcrudadminmodule_title_controller($module, $entity, $identifier = 
  */
 function drupalcrudadminmodule_access_controller($moduleName, $entityName, $permission, ConnectorFactory $factory)
 {
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
+    $dcm = $factory->getModuleConnector();
+
+    $permissions = $dcm->module_invoke($moduleName, 'menuAccessController', $entityName, $permission, $factory);
+
+    if (!empty($permissions)) {
+        return $permissions;
+    }
+
     /** @var \Liip\Drupal\Modules\DrupalConnector\User $dcu */
     $dcu = $factory->getUserConnector();
 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Bootstrap $dcb */
     $dcb = $factory->getBootstrapConnector();
-
-    /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
-    $dcm = $factory->getModuleConnector();
-
-
-    $permissions = $dcm->module_invoke($moduleName, 'menu_access_controller', $entityName, $permission);
-
-    if (!empty($permissions)) {
-        return $permissions;
-    }
 
     // do not show this menu entry on the administration overview page
     if ("de/admin/config/content" == $dcb->request_path()) {
