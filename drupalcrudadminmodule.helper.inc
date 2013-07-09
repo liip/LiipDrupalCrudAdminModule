@@ -95,7 +95,6 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
     $module = ucfirst($moduleName);
     $entity = ucfirst($entityName);
     $mandatory = array(
-        "get${module}",
         "get${entity}ById",
         "get${entity}s",
         "delete${entity}",

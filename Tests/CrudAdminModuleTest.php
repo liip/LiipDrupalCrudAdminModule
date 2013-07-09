@@ -21,7 +21,6 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
             $moduleName,
             implode(', ', array(
-                "Function getSpecialtestmodule does not exist." . PHP_EOL,
                 "Function getSpecialtestmoduleById does not exist." . PHP_EOL,
                 "Function getStdclasss does not exist." . PHP_EOL,
                 "Function deleteStdclass does not exist." . PHP_EOL,
@@ -33,7 +32,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
         $dcc = $this->getDrupalCommonConnectorMock();
         $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));
         $dcm
-            ->expects($this->exactly(9))
+            ->expects($this->exactly(8))
             ->method('module_hook')
             ->will($this->returnValue(null));
 
@@ -74,14 +73,13 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
 
         $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));
         $dcm
-            ->expects($this->exactly(9))
+            ->expects($this->exactly(8))
             ->method('module_hook')
             ->will($this->onConsecutiveCalls(
                 null,
                 null,
                 null,
                 null,
-                true,
                 true,
                 true,
                 true,
