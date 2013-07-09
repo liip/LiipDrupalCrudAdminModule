@@ -64,12 +64,12 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
     $build = array();
     $entityName = ucfirst($entityName);
 
-    $entity = $dcm->module_invoke($moduleName, "get${entityName}ById", $identifier);
+    $entity = $dcm->module_invoke($moduleName, "get".ucfirst($entityName)."ById", $identifier);
 
     if (isset($_GET['confirmDelete_' . $entity->id])) {
 
         if ('true' == $_GET['confirmDelete_' . $entity->id]) {
-            $dcm->module_invoke($moduleName, "delete${entityName}", $identifier);
+            $dcm->module_invoke($moduleName, "delete".ucfirst($entityName), $identifier);
             $dcm->module_invoke(
                 'drupaleventmanagermodule',
                 'trigger',

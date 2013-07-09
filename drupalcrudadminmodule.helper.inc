@@ -270,7 +270,7 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
         $rows = array();
 
         // fetch all active entities
-        $entities = $dcm->module_invoke($moduleName, "get${entityName}s", $identifier);
+        $entities = $dcm->module_invoke($moduleName, 'get'.ucfirst($entityName).'s');
 
         if (!empty($entities)) {
 
@@ -345,7 +345,7 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
 
     $form = array();
 
-    $entity = $dcm->module_invoke($moduleName, 'get' . $entityName, $identifier);
+    $entity = $dcm->module_invoke($moduleName, 'get' . ucfirst($entityName) . 'ById', $identifier);
 
     if (empty($entity)) {
         $form['#markup'] = $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('%entity' => $entityName));
