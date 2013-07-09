@@ -8,6 +8,7 @@
  */
 
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
+use Liip\Drupal\Modules\DrupalConnector\Module;
 
 /**
  * Renders the entities of a module into a HTML table.
@@ -108,6 +109,9 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
  */
 function drupalcrudadminmodule_edit_form(array $form, array $form_state, $moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
+    /** @var Module $dcm */
+    $dcm = $factory->getModuleConnector();
+
     // ask target module to generate form to modifiy the entity.
     $moduleForm = $dcm->module_invoke($moduleName, "generateEditForm", $identifier);
 
@@ -118,8 +122,8 @@ function drupalcrudadminmodule_edit_form(array $form, array $form_state, $module
     $form['crud'] = array(
         '#type' => 'hidden',
         '#moduleName' => $moduleName,
-        'entityName' => $entityName,
-        'identifier' => $identifier
+        '#entityName' => $entityName,
+        '#identifier' => $identifier
     );
 
     return array_merge($form, $moduleForm);
