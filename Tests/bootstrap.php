@@ -41,3 +41,4 @@ $loader->addClassMap(
 require_once($moduleDir . '/drupalcrudadminmodule.module');
 require_once($moduleDir . '/drupalcrudadminmodule.admin.inc');
 require_once($moduleDir . '/drupalcrudadminmodule.helper.inc');
+require_once($moduleDir . '/Tests/Fixtures/entityforspecialtestmodule.php');
