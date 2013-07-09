@@ -259,7 +259,7 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
     $rows = $dcm->module_invoke($moduleName, "generateOverviewTable", $identifier);
 
     // in case the hook does not exist the module_invoke() will return null.
-    if (empty($rows)) {
+    if (is_null($rows)) {
 
         $rows = array();
 
@@ -273,6 +273,8 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
                 $rows[$entity->getId()] = _drupalcrudadminmodule_create_entity_table_row($moduleName, $entity, $dcc, $dcm);
             }
         }
+    } else {
+        $rows = _drupalcrudadminmodule_inject_actions_column($rows, $moduleName, $identifier, $factory);
     }
 
     $form['overview'] = array(
@@ -283,6 +285,37 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
     );
 
     return $form;
+}
+
+/**
+ * Injects the action column to every row of the table.
+ *
+ * @param array $rows
+ * @param $moduleName
+ * @param $entityName
+ * @param $identifier
+ * @param ConnectorFactory $factory
+ *
+ * @return array
+ *
+ * @see hook_get<EntityName>ById((str) $identifier)
+ */
+function _drupalcrudadminmodule_inject_actions_column(array $rows, $moduleName, $entityName, $identifier, ConnectorFactory $factory)
+{
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
+    $dcm = $factory->getModuleConnector();
+
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
+    $dcc = $factory->getCommonConnector();
+
+    $entity = $dcm->module_invoke($moduleName, 'get'. ucfirst($entityName) . 'ById', $identifier);
+
+    foreach ($rows as $row) {
+
+        $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entity, $dcc);
+    }
+
+    return $rows;
 }
 
 /**
