@@ -231,6 +231,7 @@ function drupalcrudadminmodule_title_controller($module, $entity, $identifier = 
 
     switch (strtolower($action)) {
         case 'overview':
+        case 'list':
             $title = $dcc->t(
                 "LIIP_DRUPAL_CRUD_ADMIN_MODULE_OVERVIEW",
                 array('@module' => $module)
@@ -243,7 +244,6 @@ function drupalcrudadminmodule_title_controller($module, $entity, $identifier = 
             );
             break;
         case 'read':
-        case 'list':
             $title = $dcc->t(
                 "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_ENTITY_READ",
                 array('@module' => $module, '@entity' => $entity, '@id' => $identifier)

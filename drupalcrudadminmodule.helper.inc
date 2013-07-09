@@ -101,7 +101,7 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
         "submitHandler",
     );
 
-    foreach ($mandatory aS $func) {
+    foreach ($mandatory as $func) {
 
         if (!$dcm->module_hook($moduleName, $func)) {
             $error[] = sprintf(
