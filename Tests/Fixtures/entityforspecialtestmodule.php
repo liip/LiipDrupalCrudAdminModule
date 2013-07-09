@@ -1,19 +1,13 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: lapistano
- * Date: 7/9/13
- * Time: 10:39 AM
- * To change this template use File | Settings | File Templates.
- */
-
-namespace Liip\Drupal\Modules\drupalcrudadminmodule\Tests\Fixtures;
-
 
 use Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface;
 
 class EntityForSpecialTestModule implements EntityInterface
 {
+    protected $id;
+    protected $description;
+    protected $title;
+
     /**
      * Provides the unique identifier of the entity.
      * @return mixed
@@ -39,5 +33,25 @@ class EntityForSpecialTestModule implements EntityInterface
     public function getTitle()
     {
         return 'title of entityforspecialtestmodule';
+    }
+
+    /**
+     * Generates an array representation of an instance of this class.
+     * @return array
+     */
+    public function toArray()
+    {
+        $properties = array();
+
+        foreach ($this as $member => $default) {
+
+            $func = 'get' . ucfirst($member);
+
+            if (method_exists($this, $func)) {
+                $properties[$member] = $this->$func();
+            }
+        }
+
+        return $properties;
     }
 }
