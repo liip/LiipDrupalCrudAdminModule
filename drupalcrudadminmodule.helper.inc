@@ -24,7 +24,7 @@ function _drupalcrudadminmodule_getDestination($moduleName)
 {
     return !empty($_GET['destination']) ?
         $_GET['destination']
-        : 'admin/config/content/' . $moduleName;
+        : 'admin/config/content/crud/' . $moduleName;
 }
 
 /**
