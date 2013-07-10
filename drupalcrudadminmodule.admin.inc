@@ -82,7 +82,8 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
 
         // show confirmation page before deleting entry
         $build['#theme'] = 'drupalcrudadminmodule_confirm_delete';
-        $build['#module'] = $module;
+        $build['#moduleName'] = $moduleName;
+        $build['#entityName'] = $entityName;
         $build['#entity'] = $entity;
     }
 

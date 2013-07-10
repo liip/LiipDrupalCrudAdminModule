@@ -11,7 +11,7 @@
     </div>
     <div class="drupalcrudadminmodule-deletion-confirmation-action-wrapper">
         <?php
-        $path = sprintf("admin/config/content/%s/%s/%s/", $module, $entity->getTitle(), $entity->getId() );
+        $path = sprintf("admin/config/content/crud/%s/%s/%s/delete", $moduleName, $entityName, $entity->getId());
 
         echo l(
             t('Cancel'),
