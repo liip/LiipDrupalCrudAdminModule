@@ -378,6 +378,9 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
     $form = array();
 
     $entity = $dcm->module_invoke($moduleName, 'get' . ucfirst($entityName) . 'ById', $identifier);
+    $title = $entity->getTitle();
+    $id = $entity->getId();
+    $description = $entity->getDescription();
 
     if (empty($entity)) {
         $form['#markup'] = $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('%entity' => $entityName));
@@ -401,7 +404,7 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
             )
         ),
         '#required'      => true,
-        '#default_value' => (!empty($entity->title) ? $entity->title : ''),
+        '#default_value' => (!empty($title) ? $title : ''),
     );
 
     $form['description'] = array(
@@ -419,13 +422,13 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
                 )
             )
         ),
-        '#default_value' => (!empty($entity->description) ? $entity->description : ''),
+        '#default_value' => (!empty($description) ? $description : ''),
     );
 
     $form['registrationkey'] = array(
         '#type'          => 'hidden',
-        '#value'         => (!empty($entity->id) ? $entity->id : ''),
-        '#default_value' => (!empty($entity->id) ? $entity->id : ''),
+        '#value'         => (!empty($id) ? $id : ''),
+        '#default_value' => (!empty($id) ? $id : ''),
     );
 
     $form['submit'] = array(
