@@ -7,6 +7,7 @@
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
+require_once __DIR__ . '/drupalcrudadminmodule.admin.inc';
 require_once __DIR__ . '/drupalcrudadminmodule.helper.inc';
 
 use Assert\Assertion;
