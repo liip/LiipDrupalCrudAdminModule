@@ -65,20 +65,20 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
     $dcm = $factory->getModuleConnector();
 
     $build = array();
-    $entityName = ucfirst($entityName);
 
-    $entity = $dcm->module_invoke($moduleName, "get".ucfirst($entityName)."ById", $identifier);
+    if (isset($_GET['confirmDelete_' . $identifier])) {
 
-    if (isset($_GET['confirmDelete_' . $entity->id])) {
-
-        if ('true' == $_GET['confirmDelete_' . $entity->id]) {
-            $dcm->module_invoke($moduleName, "delete".ucfirst($entityName), $identifier);
+        if ('true' == $_GET['confirmDelete_' . $identifier]) {
+            $dcm->module_invoke($moduleName, "delete".ucfirst($entityName), $identifier, $factory);
         }
 
         // this should send you back to where you came from.
         $dcc->drupal_goto(_drupalcrudadminmodule_getDestination($moduleName));
 
     } else {
+
+        /** @var EntityInterface $entity */
+        $entity = $dcm->module_invoke($moduleName, "get".ucfirst($entityName)."ById", $identifier);
 
         // show confirmation page before deleting entry
         $build['#theme'] = 'drupalcrudadminmodule_confirm_delete';
