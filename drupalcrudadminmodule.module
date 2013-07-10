@@ -7,6 +7,8 @@
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
+require_once __DIR__ . '/drupalcrudadminmodule.helper.inc';
+
 use Assert\Assertion;
 use Liip\Drupal\Modules\DrupalConnector\Common;
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
@@ -43,7 +45,7 @@ function drupalcrudadminmodule_menu()
         'page callback'    => 'drupalcrudadminmodule_controller',
         'page arguments'   => array(4, 5, '', 'overview', $factory),
         'access callback'  => 'drupalcrudadminmodule_access_controller',
-        'access arguments' => array(4, 5, 'access content', $factory),
+        'access arguments' => array(4, 5, 'administer', $factory),
         'file'             => 'drupalcrudadminmodule.admin.inc',
     );
 
@@ -77,7 +79,6 @@ function drupalcrudadminmodule_menu()
     $items['admin/config/content/crud/%/%/%/%'] = array(
         'title callback'   => 'drupalcrudadminmodule_title_controller',
         'title arguments'  => array(4, 5, 6, 7, $factory),
-        'description'      => $dcc->t("LIIP_DRUPAL_CRUD_ADMIN_MODULE_ACTION_MODIFY_DESCRIPTION", array('@module' => $module)),
         'page callback'    => 'drupalcrudadminmodule_controller',
         'page arguments'   => array(4, 5, 6, 7, $factory),
         'access callback'  => 'drupalcrudadminmodule_access_controller',

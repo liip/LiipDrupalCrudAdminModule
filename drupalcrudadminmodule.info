@@ -6,8 +6,5 @@ version = 0.5
 
 php = 5.3
 
-files[] = drupalcrudadminmodule.admin.inc
-files[] = drupalcrudadminmodule.helper.inc
-
 dependencies[] = drupaleventmanagermodule
 dependencies[] = LiipDrupalConnectorModule
