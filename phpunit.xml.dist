@@ -17,10 +17,10 @@
         </testsuite>
     </testsuites>
 
-    <logging>
+    <!--<logging>
         <log type="coverage-html" target="build/coverage" title="Liip Drupal CRUD Admin Module"
              charset="UTF-8" yui="true" highlight="true"/>
-    </logging>
+    </logging>-->
 
     <filter>
         <whitelist>

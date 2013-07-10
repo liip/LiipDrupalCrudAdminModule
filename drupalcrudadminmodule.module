@@ -24,6 +24,10 @@ function drupalcrudadminmodule_menu()
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory */
     $factory = new ConnectorFactory();
+
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
+    $dcc = $factory->getCommonConnector();
+
     $items = array();
 
     /**

@@ -11,4 +11,3 @@ files[] = drupalcrudadminmodule.helper.inc
 
 dependencies[] = drupaleventmanagermodule
 dependencies[] = LiipDrupalConnectorModule
-dependencies[] = drupaleventmanagermodule
