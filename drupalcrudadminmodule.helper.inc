@@ -113,7 +113,9 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
         }
     }
 
-    if (!class_exists($entityFullName) || !in_array(class_implements($entityFullName), array('\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface'))) {
+    if (!class_exists($entityFullName) ||
+        !in_array("Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface", array_keys(class_implements($entityFullName)))
+    ) {
         $error[] = "Entity ($entityFullName) does not implement mandatory interface " .
             '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL;
     }
