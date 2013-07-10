@@ -1,7 +1,6 @@
 <?php
 /**
  * This module file introduces mandatory functions to handle different tasks.
- *
  * @author     Bastian Feder <drupal@bastian-feder.de>
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @copyright  Copyright (c) 2013 Liip Inc.
@@ -92,13 +91,16 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
 {
 
     $error = array();
-    $module = ucfirst($moduleName);
     $entity = ucfirst($entityName);
+    $namespaces = $dcm->module_invoke($moduleName, 'getModuleNamspaces');
+    $entityFullName = $namespaces['entities'] . '\\' . $entity;
+
     $mandatory = array(
         "get${entity}ById",
         "get${entity}s",
         "delete${entity}",
         "submitHandler",
+        "getModuleNamspaces"
     );
 
     foreach ($mandatory as $func) {
@@ -111,8 +113,8 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
         }
     }
 
-    if (in_array(class_implements($entityName), array('\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface'))) {
-        $error[] = "Entity ($entityName) does not implement mandatory interface " .
+    if (!class_exists($entityFullName) || !in_array(class_implements($entityFullName), array('\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface'))) {
+        $error[] = "Entity ($entityFullName) does not implement mandatory interface " .
             '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL;
     }
 
@@ -264,7 +266,7 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
         $rows = array();
 
         // fetch all active entities
-        $entities = $dcm->module_invoke($moduleName, 'get'.ucfirst($entityName).'s');
+        $entities = $dcm->module_invoke($moduleName, 'get' . ucfirst($entityName) . 's');
 
         if (!empty($entities)) {
 
@@ -297,7 +299,6 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
  * @param ConnectorFactory $factory
  *
  * @return array
- *
  * @see hook_get<EntityName>ById((str) $identifier)
  */
 function _drupalcrudadminmodule_inject_actions_column(array $rows, $moduleName, $entityName, $identifier, ConnectorFactory $factory)
@@ -308,7 +309,7 @@ function _drupalcrudadminmodule_inject_actions_column(array $rows, $moduleName, 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
     $dcc = $factory->getCommonConnector();
 
-    $entity = $dcm->module_invoke($moduleName, 'get'. ucfirst($entityName) . 'ById', $identifier);
+    $entity = $dcm->module_invoke($moduleName, 'get' . ucfirst($entityName) . 'ById', $identifier);
 
     foreach ($rows as $row) {
 

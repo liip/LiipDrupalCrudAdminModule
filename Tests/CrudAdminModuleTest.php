@@ -21,41 +21,35 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
             $moduleName,
             implode(', ', array(
-                "Function getSpecialtestmoduleById does not exist." . PHP_EOL,
+                "Function getStdclassById does not exist." . PHP_EOL,
                 "Function getStdclasss does not exist." . PHP_EOL,
                 "Function deleteStdclass does not exist." . PHP_EOL,
                 "Function submitHandler does not exist." . PHP_EOL,
-                "Entity (Stdclass) does not implement mandatory interface " . '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL
+                "Function getModuleNamspaces does not exist." . PHP_EOL,
+                "Entity (\Stdclass) does not implement mandatory interface " . '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL
             ))
         );
 
         $dcc = $this->getDrupalCommonConnectorMock();
-        $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));
+        $dcm = $this->getDrupalModuleConnectorMock(array('module_hook', 'module_invoke'));
         $dcm
-            ->expects($this->exactly(7))
+            ->expects($this->exactly(5))
             ->method('module_hook')
             ->will($this->returnValue(null));
+        $dcm
+            ->expects($this->once())
+            ->method('module_invoke')
+            ->will($this->returnValue(array('entities' => '')));
 
-        $factory = $this->getDrupalConnectorFactoryMock(array('getModuleConnector', 'getCommonConnector'));
-        $factory
-            ->staticExpects($this->once())
-            ->method('getCommonConnector')
-            ->will($this->returnValue($dcc));
-        $factory
-            ->staticExpects($this->once())
-            ->method('getModuleConnector')
-            ->will($this->returnValue($dcm));
+        $this->setExpectedException('LogicException', $message);
 
-        $this->setExpectedException('LogicException');
-
-        _drupalcrudadminmodule_verify_contract($moduleName, $entityName, $factory);
+        _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleName, $entityName, $dcc, $dcm);
     }
 
     public function testVerifyContractExpectWarning()
     {
 
         $moduleName = 'specialtestmodule';
-        $entityName = 'entityforspecialtestmodule';
         $message = 'Related module (specialtestmodule) does not implement some optional functions. '.
             'Missing functions: generateEditForm, generateOverviewTable, menuAccessController'.
              PHP_EOL;
@@ -73,29 +67,15 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
 
         $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));
         $dcm
-            ->expects($this->exactly(7))
+            ->expects($this->exactly(3))
             ->method('module_hook')
             ->will($this->onConsecutiveCalls(
                 null,
                 null,
-                null,
-                true,
-                true,
-                true,
-                true
+                null
             ));
 
-        $factory = $this->getDrupalConnectorFactoryMock(array('getModuleConnector', 'getCommonConnector'));
-        $factory
-            ->staticExpects($this->once())
-            ->method('getCommonConnector')
-            ->will($this->returnValue($dcc));
-        $factory
-            ->staticExpects($this->once())
-            ->method('getModuleConnector')
-            ->will($this->returnValue($dcm));
-
-        _drupalcrudadminmodule_verify_contract($moduleName, $entityName, $factory);
+        _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleName, $dcc, $dcm);
     }
 
     /**
@@ -159,6 +139,4 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             'at least one mandatory field are not set' => array(array('crud' => array('#moduleName' => 'tux'))),
         );
     }
-
-
 }

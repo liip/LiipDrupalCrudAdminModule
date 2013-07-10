@@ -65,26 +65,46 @@ This hook shall provide a list of entities fetched from whatever data source. It
 entities meet the expectations the interface Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface defines.
 This is to ensure the correct behavior of an entity when it comes to the generation of an overview table.
 
-E.g. $organisations = module_invoke('organisationsmanager', 'getOrganisations');
+E.g.
+
+    $organisations = module_invoke('organisationsmanager', 'getOrganisations');
 
 #### hook_get?<EntityName>ById()
 Expecting the unique identifier of an entity it returns either a preset entity or in case the entity could not be found
 an exception.
 sure the correct behavior of an entity when it comes to the generation of an overview table.
 
-E.g. $organisation = module_invoke('organisationsmanager', 'getOrganisationById', $uniqueId);
+E.g.
+
+    $organisation = module_invoke('organisationsmanager', 'getOrganisationById', $uniqueId);
 
 #### hook_delete<EntityName>()
 This hook will be invoked by the handler of the delete action.
 Its general purpose to actually perform the deletion of the entity identifies by the given unique id.
 
-E.g. $suceed = module_invoke('organisationsmanager', 'deleteOrganisation', $uniqueId);
+E.g.
+
+    $suceed = module_invoke('organisationsmanager', 'deleteOrganisation', $uniqueId);
 
 #### hook_submitHandler()
 The submit handler is the only custom hook actually injecting functionality to the crud admin module not being altered
 in any case.
 It replaces the hook_form_submit() of the consuming module and should be implemented in the same way.
 
+#### hook_getModuleNamspaces()
+This custom hook shall provide a set of namespaces defined for used entities, registry, and the base name space of the module.
+
+e.g.
+
+```php
+function druapalsrudadminmodule_getModuleNamspaces()
+{
+    return array(
+        'base' => '\\Liip\\Drupal\\Modules\\CrudAdmin',
+        'entities' => '\\Liip\\Drupal\\Modules\\CrudAdmin\\Classes\\Entities',
+    );
+}
+```
 
 ### Optional custom hooks
 Optional custom hook have a working repesentation in the curdadminmodule. The following hooks will be called on different
