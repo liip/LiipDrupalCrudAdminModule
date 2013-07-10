@@ -150,53 +150,17 @@ function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '
                     $identifier,
                     $factory
                 );
-                $dcm->module_invoke(
-                    'drupaleventmanagermodule',
-                    'trigger',
-                    'liip.crudadmin.actions.list',
-                    $module,
-                    $entity,
-                    $identifier
-                );
 
                 return $page;
             case 'read':
 
-                $dcm->module_invoke(
-                    'drupaleventmanagermodule',
-                    'trigger',
-                    'liip.crudadmin.actions.read',
-                    $module,
-                    $entity,
-                    $identifier
-                );
-                break;
+                return drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, $identifier, $factory);
             case 'add':
 
-                $form =  drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, '', $factory);
-                $dcm->module_invoke(
-                    'drupaleventmanagermodule',
-                    'trigger',
-                    'liip.crudadmin.actions.create',
-                    $module,
-                    $entity,
-                    $identifier
-                );
-
-                return $form;
+                return drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, '', $factory);
             case 'edit':
 
-                $form =  drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, $identifier, $factory);
-                $dcm->module_invoke(
-                    'drupaleventmanagermodule',
-                    'trigger',
-                    'liip.crudadmin.actions.update',
-                    $module,
-                    $entity,
-                    $identifier
-                );
-
-                return $form;
+                return drupalcrudadminmodule_page('drupalcrudadminmodule_edit_form', $module, $entity, $identifier, $factory);
             case 'delete':
 
                 // find event trigger in function drupalcrudadminmodule_delete_form

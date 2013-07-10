@@ -71,14 +71,6 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
 
         if ('true' == $_GET['confirmDelete_' . $entity->id]) {
             $dcm->module_invoke($moduleName, "delete".ucfirst($entityName), $identifier);
-            $dcm->module_invoke(
-                'drupaleventmanagermodule',
-                'trigger',
-                'liip.crudadmin.actions.delete',
-                $moduleName,
-                $entityName,
-                $identifier
-            );
         }
 
         // this should send you back to where you came from.
