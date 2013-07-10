@@ -176,18 +176,19 @@ function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleNa
  * Gathers necessary information to display a set of entities as HTML table.
  *
  * @param string $moduleName
+ * @param string $entityName
  * @param Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
  * @param Liip\Drupal\Modules\DrupalConnector\Common $dcc
  * @param Liip\Drupal\Modules\DrupalConnector\Module $dcm
  *
  * @return array
  */
-function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInterface $entity, Common $dcc, Module $dcm)
+function _drupalcrudadminmodule_create_entity_table_row($moduleName, $entityName, EntityInterface $entity, Common $dcc, Module $dcm)
 {
     $row = array();
     $row['title'] = $dcc->t($entity->getTitle());
     $row['description'] = $dcc->t($entity->getDescription());
-    $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entity, $dcc);
+    $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entityName, $entity, $dcc);
 
     return $row;
 }
@@ -196,12 +197,13 @@ function _drupalcrudadminmodule_create_entity_table_row($moduleName, EntityInter
  * Create the »action« column of the entity overview table.
  *
  * @param string $moduleName
+ * @param string $entityName
  * @param Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
  * @param Liip\Drupal\Modules\DrupalConnector\Common $dcc
  *
  * @return string
  */
-function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, EntityInterface $entity, Common $dcc)
+function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entityName, EntityInterface $entity, Common $dcc)
 {
     $destination = _drupalcrudadminmodule_getDestination($moduleName);
 
@@ -212,7 +214,7 @@ function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, 
             sprintf(
                 'admin/config/content/crud/%s/%s/%s/edit',
                 $moduleName,
-                $entity->getTitle(),
+                $entityName,
                 $entity->getId()
             ),
             array(
@@ -224,7 +226,7 @@ function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, 
             sprintf(
                 'admin/config/content/crud/%s/%s/%s/delete',
                 $moduleName,
-                $entity->getTitle(),
+                $entityName,
                 $entity->getId()
             ),
             array(
@@ -274,7 +276,7 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
 
             /** @var Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity */
             foreach ($entities as $registrationKey => $entity) {
-                $rows[$entity->getId()] = _drupalcrudadminmodule_create_entity_table_row($moduleName, $entity, $dcc, $dcm);
+                $rows[$entity->getId()] = _drupalcrudadminmodule_create_entity_table_row($moduleName, $entityName, $entity, $dcc, $dcm);
             }
         }
     } else {
