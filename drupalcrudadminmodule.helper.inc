@@ -342,12 +342,12 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
 
     if (!empty($rows)) {
         $header = array();
+        $clone = $rows;
+        $row = array_shift($clone);
 
-        foreach (array_keys($rows[0]) as $columnTitle) {
+        foreach (array_keys($row) as $columnTitle) {
             $header[] = $dcc->t(ucfirst($columnTitle));
         }
-
-        $header[] = $dcc->t('Actions');
     }
 
     return array(
@@ -381,7 +381,7 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
 
     if (empty($entity)) {
         $form['#markup'] = $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('%entity' => $entityName));
-        $form['#redirect'] = _drupalcrudadminmodule_getDestination();
+        $form['#redirect'] = _drupalcrudadminmodule_getDestination($moduleName);
 
         return $form;
     }
@@ -436,10 +436,10 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
     );
 
     $form['cancel'] = array(
-        "#markup" => $dcc->l($dcc->t('Cancel'), _drupalcrudadminmodule_getDestination())
+        "#markup" => $dcc->l($dcc->t('Cancel'), _drupalcrudadminmodule_getDestination($moduleName))
     );
 
-    $form['#redirect'] = _drupalcrudadminmodule_getDestination();
+    $form['#redirect'] = _drupalcrudadminmodule_getDestination($moduleName);
 
     return $form;
 }
