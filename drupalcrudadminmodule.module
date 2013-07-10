@@ -65,6 +65,7 @@ function drupalcrudadminmodule_menu()
         'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'administer', $factory),
         'file'             => 'drupalcrudadminmodule.admin.inc',
+        'type'             => MENU_LOCAL_ACTION,
     );
 
     /**
@@ -104,7 +105,7 @@ function drupalcrudadminmodule_theme()
     return array(
         'drupalcrudadminmodule_confirm_delete' => array(
             'template'  => 'drupalcrudadminmodule_confirm_delete',
-            'variables' => array('module' => null, 'entity' => null),
+            'variables' => array('entityName' => null, 'moduleName' => null, 'entity' => null),
             'path'      => $templatePath,
         ),
     );

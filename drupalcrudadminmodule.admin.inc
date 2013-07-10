@@ -73,7 +73,7 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
         }
 
         // this should send you back to where you came from.
-        $dcc->drupal_goto(_drupalcrudadminmodule_getDestination($moduleName));
+        $dcc->drupal_goto(_drupalcrudadminmodule_getDestination($moduleName, $entityName));
 
     } else {
 
@@ -138,7 +138,7 @@ function drupalcrudadminmodule_edit_form(array $form, array $form_state, $module
 function drupalcrudadminmodule_edit_form_submit(array &$form, array &$form_state)
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory */
-    $factory = new ConnectorFactory();
+    $factory = $form['submit']['#connectorFactory'];
 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
     $dcm = $factory->getModuleConnector();
@@ -155,6 +155,9 @@ function drupalcrudadminmodule_edit_form_submit(array &$form, array &$form_state
         $dcf->form_set_error('crud', $e->getMessage());
     }
 
+    // Drupal does not recognize the already set form redirect ;(
+    $form_state['redirect'][] = $form['#redirect'];
+
     // ask target module to handle the submit action by itself.
-    $dcm->module_invoke($moduleName, "submitHandler", $form, $form_state, $factory);
+    $dcm->module_invoke($form['crud']['#moduleName'], "submitHandler", $form, $form_state, $factory);
 }

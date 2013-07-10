@@ -150,3 +150,5 @@ the Drupal administration backend. To find used translations search for:
 
     LIIP_DRUPAL_CRUD_ADMIN_MODULE
 
+#### hook_getDestination()
+Provides the path where to redirect when e.g. the form was successfully submitted.

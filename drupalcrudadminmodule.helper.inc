@@ -16,14 +16,27 @@ use Liip\Drupal\Modules\DrupalConnector\Module;
  * Provides the url to be returned to after successful form submit or cancel
  *
  * @param string $moduleName
+ * @param string $entityName
  *
+ * @group optionalCustomHooks
  * @return string
  */
-function _drupalcrudadminmodule_getDestination($moduleName)
+function _drupalcrudadminmodule_getDestination($moduleName, $entityName = '')
 {
-    return !empty($_GET['destination']) ?
-        $_GET['destination']
-        : 'admin/config/content/crud/' . $moduleName;
+    $destination = ConnectorFactory::getModuleConnector()
+        ->module_invoke($moduleName, 'getDestination');
+
+    if (empty($destination)) {
+
+        $path = (!empty($entityName)) ? $entityName.'/'.$moduleName : $moduleName;
+
+        $destination = !empty($_GET['destination']) ?
+            $_GET['destination']
+            : 'admin/config/content/crud/' . $path;
+    }
+
+
+    return $destination;
 }
 
 /**
@@ -205,7 +218,7 @@ function _drupalcrudadminmodule_create_entity_table_row($moduleName, $entityName
  */
 function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entityName, EntityInterface $entity, Common $dcc)
 {
-    $destination = _drupalcrudadminmodule_getDestination($moduleName);
+    $destination = _drupalcrudadminmodule_getDestination($moduleName, $entityName);
 
     return sprintf(
         '<div class="table-item-action-wrapper">%s %s</div>',
@@ -376,17 +389,23 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
     $dcm = $factory->getModuleConnector();
 
     $form = array();
+    $title = '';
+    $id = '';
+    $description = '';
 
-    $entity = $dcm->module_invoke($moduleName, 'get' . ucfirst($entityName) . 'ById', $identifier);
-    $title = $entity->getTitle();
-    $id = $entity->getId();
-    $description = $entity->getDescription();
+    if (!empty($identifier)) {
 
-    if (empty($entity)) {
-        $form['#markup'] = $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('%entity' => $entityName));
-        $form['#redirect'] = _drupalcrudadminmodule_getDestination($moduleName);
+        $entity = $dcm->module_invoke($moduleName, 'get' . ucfirst($entityName) . 'ById', $identifier);
+        $title = $entity->getTitle();
+        $id = $entity->getId();
+        $description = $entity->getDescription();
 
-        return $form;
+        if (empty($entity)) {
+            $form['#markup'] = $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('%entity' => $entityName));
+            $form['#redirect'] = _drupalcrudadminmodule_getDestination($moduleName, $entityName);
+
+            return $form;
+        }
     }
 
     $form['title'] = array(
@@ -404,7 +423,7 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
             )
         ),
         '#required'      => true,
-        '#default_value' => (!empty($title) ? $title : ''),
+        '#default_value' => $title,
     );
 
     $form['description'] = array(
@@ -422,13 +441,13 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
                 )
             )
         ),
-        '#default_value' => (!empty($description) ? $description : ''),
+        '#default_value' => $description,
     );
 
     $form['registrationkey'] = array(
         '#type'          => 'hidden',
-        '#value'         => (!empty($id) ? $id : ''),
-        '#default_value' => (!empty($id) ? $id : ''),
+        '#value'         => $id,
+        '#default_value' => $id,
     );
 
     $form['submit'] = array(
@@ -439,10 +458,10 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
     );
 
     $form['cancel'] = array(
-        "#markup" => $dcc->l($dcc->t('Cancel'), _drupalcrudadminmodule_getDestination($moduleName))
+        "#markup" => $dcc->l($dcc->t('Cancel'), _drupalcrudadminmodule_getDestination($moduleName, $entityName))
     );
 
-    $form['#redirect'] = _drupalcrudadminmodule_getDestination($moduleName);
+    $form['#redirect'] = _drupalcrudadminmodule_getDestination($moduleName, $entityName);
 
     return $form;
 }
