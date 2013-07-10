@@ -56,9 +56,8 @@ function drupalcrudadminmodule_menu()
      * admin/config/content/crud/<module>/<entity/<action>
      *
      * e.g. admin/config/content/crud/organisations/organisation/add
-     * e.g. admin/config/content/crud/organisations/organisation/list
      */
-    $items['admin/config/content/crud/%/%/%'] = array(
+    $items['admin/config/content/crud/%/%/add'] = array(
         'title callback'   => 'drupalcrudadminmodule_title_controller',
         'title arguments'  => array(4, 5, '', 6, $factory),
         'page callback'    => 'drupalcrudadminmodule_controller',
@@ -164,9 +163,7 @@ function drupalcrudadminmodule_controller($module, $entity = '', $identifier = '
             case 'delete':
 
                 // find event trigger in function drupalcrudadminmodule_delete_form
-                $form = drupalcrudadminmodule_delete_form($module, $entity, $identifier);
-
-                return $form;
+                return drupalcrudadminmodule_delete_form($module, $entity, $identifier, $factory);
             default:
                 throw new InvalidArgumentException("Invalid action ($action) invoked.");
         }
