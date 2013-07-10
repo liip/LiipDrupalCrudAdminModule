@@ -7,6 +7,7 @@
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
+use Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface;
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
 use Liip\Drupal\Modules\DrupalConnector\Module;
 
@@ -51,16 +52,17 @@ function drupalcrudadminmodule_overview_table(array $form, array $form_state, $m
  * @param string $moduleName
  * @param string $entityName
  * @param string $identifier
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @return array
  */
-function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier)
+function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
-    $dcc = ConnectorFactory::getCommonConnector();
+    $dcc = $factory->getCommonConnector();
 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
-    $dcm = ConnectorFactory::getModuleConnector();
+    $dcm = $factory->getModuleConnector();
 
     $build = array();
     $entityName = ucfirst($entityName);
