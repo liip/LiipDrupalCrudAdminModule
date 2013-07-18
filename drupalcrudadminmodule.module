@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This module file is required by Drupal to act as entry point to the current module.
  *
  * @author     Bastian Feder <drupal@bastian-feder.de>
@@ -7,10 +8,10 @@
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
+// unfortunately both file won't be included by the composer autoloader nor by the Drupal class registry.
 require_once __DIR__ . '/drupalcrudadminmodule.admin.inc';
 require_once __DIR__ . '/drupalcrudadminmodule.helper.inc';
 
-use Assert\Assertion;
 use Liip\Drupal\Modules\DrupalConnector\Common;
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
 use Liip\Drupal\Modules\EventManager\EventManagerException;
@@ -27,9 +28,6 @@ function drupalcrudadminmodule_menu()
 {
     /** @var \Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory */
     $factory = new ConnectorFactory();
-
-    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
-    $dcc = $factory->getCommonConnector();
 
     $items = array();
 
@@ -123,7 +121,6 @@ function drupalcrudadminmodule_theme()
  * @return array
  * @throws InvalidArgumentException
  *
- * @see drupaleventmanagermodule_trigger()
  * @see drupalcrudadminmodule_page()
  * @see drupalcrudadminmodule_delete_form()
  */
@@ -255,6 +252,7 @@ function drupalcrudadminmodule_access_controller($moduleName, $entityName, $perm
     /** @var \Liip\Drupal\Modules\DrupalConnector\Module $dcm */
     $dcm = $factory->getModuleConnector();
 
+    // check for a custom hook_menuAccessController() ans if there is one, use this instead.
     $permissions = $dcm->module_invoke($moduleName, 'menuAccessController', $entityName, $permission, $factory);
 
     if (!empty($permissions)) {

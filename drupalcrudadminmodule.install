@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * Defines the module management hooks required by Drupal.
  *
  * @author     Bastian Feder <drupal@bastian-feder.de>
@@ -40,7 +41,7 @@ function drupalcrudadminmodule_enable()
 /**
  * Processes cleanup operations so the system stays clean after deactivation of the module.
  *
- * @see hook_uninstall()
+ * @see hook_disable()
  */
 function drupalcrudadminmodule_disable()
 {

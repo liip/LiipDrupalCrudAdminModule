@@ -1,5 +1,6 @@
 <?php
 /**
+ * @file
  * This module file introduces mandatory functions to handle administrative tasks.
  *
  * @author     Bastian Feder <drupal@bastian-feder.de>
@@ -55,6 +56,9 @@ function drupalcrudadminmodule_overview_table(array $form, array $form_state, $m
  * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @return array
+ *
+ * @see ${moduleName}_delete${entityName}()
+ * @see ${moduleName}_get${entityName}ById()
  */
 function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
@@ -101,6 +105,8 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
  * @param ConnectorFactory $factory
  *
  * @return array
+ *
+ * @see ${moduleName}_generateEditForm((str) $identifier)
  */
 function drupalcrudadminmodule_edit_form(array $form, array $form_state, $moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
@@ -134,6 +140,7 @@ function drupalcrudadminmodule_edit_form(array $form, array $form_state, $module
  * @param array $form_state
  *
  * @see _drupalcrudadminmodule_verify_form()
+ * @see ${moduleName}_submitHandler()
  */
 function drupalcrudadminmodule_edit_form_submit(array &$form, array &$form_state)
 {

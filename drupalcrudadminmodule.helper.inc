@@ -1,6 +1,8 @@
 <?php
 /**
+ * @file
  * This module file introduces mandatory functions to handle different tasks.
+ *
  * @author     Bastian Feder <drupal@bastian-feder.de>
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @copyright  Copyright (c) 2013 Liip Inc.
@@ -20,9 +22,12 @@ use Liip\Drupal\Modules\DrupalConnector\Module;
  *
  * @group optionalCustomHooks
  * @return string
+ *
+ * @see ${moduleName}_getDestination()
  */
 function _drupalcrudadminmodule_getDestination($moduleName, $entityName = '')
 {
+    // check for a custom hook_getDestination() ans if there is one, use this instead.
     $destination = ConnectorFactory::getModuleConnector()
         ->module_invoke($moduleName, 'getDestination');
 
@@ -86,8 +91,8 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, Connec
     /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
     $dcc = $factory->getCommonConnector();
 
-    _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleName, $dcc, $dcm);
-    _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleName, $entityName, $dcc, $dcm);
+    _drupalcrudadminmodule_verify_existence_of_optional_callbacks($moduleName, $dcc, $dcm);
+    _drupalcrudadminmodule_verify_existence_of_mandatory_callbacks($moduleName, $entityName, $dcc, $dcm);
 }
 
 /**
@@ -99,6 +104,9 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, Connec
  * @param Liip\Drupal\Modules\DrupalConnector\Module $dcm
  *
  * @throws LogicException
+ *
+ * @see ${moduleName}_getModuleNamespaces()
+ *
  */
 function _drupalcrudadminmodule_verify_existence_of_mandatory_callbacks($moduleName, $entityName, Common $dcc, Module $dcm)
 {
@@ -261,7 +269,9 @@ function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, 
  * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @return array
- * @see hook_generateOverviewTable((str) $identifier)
+ *
+ * @see hook_generateOverviewTable()
+ * @see hook_get${entityName}s()
  */
 function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
@@ -310,13 +320,14 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
  * Injects the action column to every row of the table.
  *
  * @param array $rows
- * @param $moduleName
- * @param $entityName
- * @param $identifier
+ * @param string $moduleName
+ * @param string $entityName
+ * @param string $identifier
  * @param ConnectorFactory $factory
  *
  * @return array
- * @see hook_get<EntityName>ById((str) $identifier)
+ *
+ * @see hook_get${entityName}ById()
  */
 function _drupalcrudadminmodule_inject_actions_column(array $rows, $moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
@@ -326,6 +337,7 @@ function _drupalcrudadminmodule_inject_actions_column(array $rows, $moduleName, 
     /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
     $dcc = $factory->getCommonConnector();
 
+    // ask consumer module for available entities and their data.
     $entity = $dcm->module_invoke($moduleName, 'get' . ucfirst($entityName) . 'ById', $identifier);
 
     foreach ($rows as $row) {
@@ -379,6 +391,8 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
  * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @return array
+ *
+ * @see hook_get${entityName}ById()
  */
 function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityName, $identifier, ConnectorFactory $factory)
 {
