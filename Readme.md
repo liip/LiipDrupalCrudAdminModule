@@ -6,10 +6,6 @@ Further it should provide a number of custom hooks to replace or enhance those o
 In addition it emits events after every major action (like: create, read, update, delete, and list) passing the complete scope
 of the current operation.
 
-
-**NOT USEABLE YET**
-
-
 ## Current Travis Status
 
 [![Build Status](https://secure.travis-ci.org/liip/drupalcrudadminmodule.png?branch=master)](http://travis-ci.org/liip/drupalcrudadminmodule)
