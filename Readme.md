@@ -55,7 +55,7 @@ To not have to deal with the ability to store and retrieve data or how to procee
 mandatory hooks were defined. These hook have to be provided by the consuming module.
 The existence of these modules are verified by the drupalcrudadminmodule.
 
-#### hook_get<EntityName>s()
+#### hook_get»EntityName«s()
 This hook shall provide a list of entities fetched from whatever data source. It also has to make sure that the involved
 entities meet the expectations the interface Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface defines.
 This is to ensure the correct behavior of an entity when it comes to the generation of an overview table.
@@ -64,7 +64,7 @@ E.g.
 
     $organisations = module_invoke('organisationsmanager', 'getOrganisations');
 
-#### hook_get?<EntityName>ById()
+#### hook_get»EntityName«ById()
 Expecting the unique identifier of an entity it returns either a preset entity or in case the entity could not be found
 an exception.
 sure the correct behavior of an entity when it comes to the generation of an overview table.
@@ -73,7 +73,7 @@ E.g.
 
     $organisation = module_invoke('organisationsmanager', 'getOrganisationById', $uniqueId);
 
-#### hook_delete<EntityName>()
+#### hook_delete»EntityName«()
 This hook will be invoked by the handler of the delete action.
 Its general purpose to actually perform the deletion of the entity identifies by the given unique id.
 
