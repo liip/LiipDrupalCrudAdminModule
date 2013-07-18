@@ -25,7 +25,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
                 "Function getStdclasss does not exist." . PHP_EOL,
                 "Function deleteStdclass does not exist." . PHP_EOL,
                 "Function submitHandler does not exist." . PHP_EOL,
-                "Function getModuleNamspaces does not exist." . PHP_EOL,
+                "Function getModuleNamespaces does not exist." . PHP_EOL,
                 "Entity (\Stdclass) does not implement mandatory interface " . '(\Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface).' . PHP_EOL
             ))
         );
