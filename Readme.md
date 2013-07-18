@@ -8,8 +8,7 @@ of the current operation.
 
 ## Current Travis Status
 
-[![Build Status](https://secure.travis-ci.org/liip/drupalcrudadminmodule.png?branch=master)](http://travis-ci.org/liip/drupalcrudadminmodule)
-
+[![Build Status](https://travis-ci.org/liip/LiipDrupalCrudAdminModule.png?branch=master)](https://travis-ci.org/liip/LiipDrupalCrudAdminModule)
 
 ## Installation
 The source is now PSR-0 compatible. There is no specific installation routine to be followed. Just clone or checkout the source into to your project
