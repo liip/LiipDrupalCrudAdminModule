@@ -18,7 +18,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
         $entityName = 'stdclass';
         $message = sprintf(
             'Related module (%s) does not implement the mandatory functions ' .
-            'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
+            'or the entity does implement the mandatory interface. Occurred errors: %s' . PHP_EOL,
             $moduleName,
             implode(', ', array(
                 "Function getStdclassById does not exist." . PHP_EOL,
@@ -43,7 +43,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
 
         $this->setExpectedException('LogicException', $message);
 
-        _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleName, $entityName, $dcc, $dcm);
+        _drupalcrudadminmodule_verify_existence_of_mandatory_callbacks($moduleName, $entityName, $dcc, $dcm);
     }
 
     public function testVerifyContractExpectWarning()
@@ -75,7 +75,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
                 null
             ));
 
-        _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleName, $dcc, $dcm);
+        _drupalcrudadminmodule_verify_existence_of_optional_callbacks($moduleName, $dcc, $dcm);
     }
 
     /**
