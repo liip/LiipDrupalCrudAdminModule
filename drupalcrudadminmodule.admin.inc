@@ -107,7 +107,7 @@ function drupalcrudadminmodule_edit_form(array $form, array $form_state, $module
     /** @var Module $dcm */
     $dcm = $factory->getModuleConnector();
 
-    // ask target module to generate form to modifiy the entity.
+    // ask target module to generate form to modify the entity.
     $moduleForm = $dcm->module_invoke($moduleName, "generateEditForm", $identifier);
 
     if (empty($moduleForm)) {
@@ -128,7 +128,7 @@ function drupalcrudadminmodule_edit_form(array $form, array $form_state, $module
  * Defines the actions to be process when the modification form was submitted.
  *
  * In case the consuming module does implement the custom hook (hook_submitHandler()) this will be invoked instead.
- * Implementes the hook_form_submit().
+ * Implements the hook_form_submit().
  *
  * @param array $form
  * @param array $form_state

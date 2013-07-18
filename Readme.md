@@ -27,7 +27,7 @@ Add the following lines to your `composer.json` file and update your project's c
 }
 ```
 
-This composer configuration will checkout the 'cutting eadge' version ('dev-master') of the project. Be alarmed that this might be broken sometimes.
+This composer configuration will checkout the 'cutting edge' version ('dev-master') of the project. Be alarmed that this might be broken sometimes.
 
 
 **NOTE:**
@@ -79,20 +79,20 @@ Its general purpose to actually perform the deletion of the entity identifies by
 
 E.g.
 
-    $suceed = module_invoke('organisationsmanager', 'deleteOrganisation', $uniqueId);
+    $succeed = module_invoke('organisationsmanager', 'deleteOrganisation', $uniqueId);
 
 #### hook_submitHandler()
 The submit handler is the only custom hook actually injecting functionality to the crud admin module not being altered
 in any case.
 It replaces the hook_form_submit() of the consuming module and should be implemented in the same way.
 
-#### hook_getModuleNamspaces()
+#### hook_getModuleNamespaces()
 This custom hook shall provide a set of namespaces defined for used entities, registry, and the base name space of the module.
 
 e.g.
 
 ```php
-function druapalsrudadminmodule_getModuleNamspaces()
+function druapalsrudadminmodule_getModuleNamespaces()
 {
     return array(
         'base' => '\\Liip\\Drupal\\Modules\\CrudAdmin',
@@ -102,8 +102,8 @@ function druapalsrudadminmodule_getModuleNamspaces()
 ```
 
 ### Optional custom hooks
-Optional custom hook have a working repesentation in the curdadminmodule. The following hooks will be called on different
-occursions within the process. In case they are not present in the consuming module or do not return the expected format
+Optional custom hook have a working representation in the curdadminmodule. The following hooks will be called on different
+occurrence within the process. In case they are not present in the consuming module or do not return the expected format
 a default implementation will take over providing ome kind of a fallback solution.
 
 #### hook_generateEditForm()
@@ -112,7 +112,7 @@ by the consuming module and may differ from the default. In that case the hook d
 add and modify an entity.
 If not implemented a default form only covering the title and the description of an entity will be generated.
 
-Additionaly to either the default or the custom form an extra set of fields will be added to the form defining the scope
+Additionally to either the default or the custom form an extra set of fields will be added to the form defining the scope
 of the current action. The fields are:
 
 - the module name
@@ -124,8 +124,8 @@ Do not remove nor modify these fields since they are mandatory for the process.
 #### hook_generateOverviewTable()
 Once implemented, this optional hook shall provide an set of table rows representing the data of an entity to be presented
 and suitable for the table template (https://api.drupal.org/api/drupal/includes!theme.inc/function/theme_table/7) provided
-by Drupal 7 with the difference, that the actions column (defininge the actions the entity implements, like delete or edit)
-must not be added. This will be taken care of by the base module since there are a number of links to be created consistantly.
+by Drupal 7 with the difference, that the actions column (defining the actions the entity implements, like delete or edit)
+must not be added. This will be taken care of by the base module since there are a number of links to be created consistently.
 The base module does recognize if there is no entity information to be shown and displays a special message instead.
 In case you want to change this message, use the Drupal administration to change it. Search for
 
