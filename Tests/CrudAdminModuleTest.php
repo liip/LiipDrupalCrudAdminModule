@@ -110,13 +110,13 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             ),
             'non standard row set' => array(
                 array(
-                    'header' => array('Name', 'Number', 'Actions',
+                    'header' => array('Name', 'Number'
                     ),
                     'empty'  => 'LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY',
                     'rows'   => array(array('name' => 'Tux', 'number' => 9)),
                 ),
                 array(array('name' => 'Tux', 'number' => 9)),
-                7
+                6
             ),
         );
     }
