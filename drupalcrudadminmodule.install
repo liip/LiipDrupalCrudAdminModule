@@ -17,7 +17,7 @@ use Liip\Drupal\Modules\Registry\RegistryInterface;
 
 
 /**
- * Sets up the environment for the module to function porperly
+ * Sets up the environment for the module to function properly
  *
  * @see hook_enable()
  */
@@ -89,7 +89,7 @@ function _drupalcrudadminmodule_unregisterEvent($eventName, RegistryInterface $r
 }
 
 /**
- * Creates an event to be emmitted somewhen.
+ * Creates an event to be emitted somewhen.
  *
  * @param string $eventName
  * @param SubjectFactory $factory

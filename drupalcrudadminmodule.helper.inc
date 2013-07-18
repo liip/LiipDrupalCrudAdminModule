@@ -91,7 +91,7 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, Connec
 }
 
 /**
- * Verifies the existeance of a set of mandatory callbacks to be defined by the consumer of the module.
+ * Verifies the existence of a set of mandatory callbacks to be defined by the consumer of the module.
  *
  * @param string $moduleName
  * @param string $entityName
@@ -100,12 +100,12 @@ function _drupalcrudadminmodule_verify_contract($moduleName, $entityName, Connec
  *
  * @throws LogicException
  */
-function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleName, $entityName, Common $dcc, Module $dcm)
+function _drupalcrudadminmodule_verify_existence_of_mandatory_callbacks($moduleName, $entityName, Common $dcc, Module $dcm)
 {
 
     $error = array();
     $entity = ucfirst($entityName);
-    $namespaces = $dcm->module_invoke($moduleName, 'getModuleNamspaces');
+    $namespaces = $dcm->module_invoke($moduleName, 'getModuleNamespaces');
     $entityFullName = $namespaces['entities'] . '\\' . $entity;
 
     $mandatory = array(
@@ -113,7 +113,7 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
         "get${entity}s",
         "delete${entity}",
         "submitHandler",
-        "getModuleNamspaces"
+        "getModuleNamespaces"
     );
 
     foreach ($mandatory as $func) {
@@ -137,7 +137,7 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
         throw new LogicException(
             sprintf(
                 'Related module (%s) does not implement the mandatory functions ' .
-                'or the entity does implement the mandatory interface. Occured errors: %s' . PHP_EOL,
+                'or the entity does implement the mandatory interface. Occurred errors: %s' . PHP_EOL,
                 $moduleName,
                 implode(', ', $error)
             )
@@ -146,18 +146,18 @@ function _drupalcrudadminmodule_verify_existance_of_mandatory_callbacks($moduleN
 }
 
 /**
- * Verifies the existance of a set of optional call back functions maybe available in the consuming module.
+ * Verifies the existence of a set of optional call back functions maybe available in the consuming module.
  * These functions will then be used instead of the default function.
  *
  * @param string $moduleName
  * @param \Liip\Drupal\Modules\DrupalConnector\Common $dcc
  * @param \Liip\Drupal\Modules\DrupalConnector\Module $dcm
  */
-function _drupalcrudadminmodule_verify_existance_of_optional_callbacks($moduleName, Common $dcc, Module $dcm)
+function _drupalcrudadminmodule_verify_existence_of_optional_callbacks($moduleName, Common $dcc, Module $dcm)
 {
     $warning = array();
 
-    // optionl are not mandatory, since this module covers for them using default implementations.
+    // options are not mandatory, since this module covers for them using default implementations.
     $optional = array(
         "generateEditForm",
         "generateOverviewTable",
@@ -371,7 +371,7 @@ function _drupalcrudadminmodule_generate_table_header_variables(array $rows, $en
 }
 
 /**
- * Generates the form to be shown when the entity shall be modufied or a new entity is to be added.
+ * Generates the form to be shown when the entity shall be modified or a new entity is to be added.
  *
  * @param string $moduleName
  * @param string $entityName
