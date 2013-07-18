@@ -92,7 +92,7 @@ This custom hook shall provide a set of namespaces defined for used entities, re
 e.g.
 
 ```php
-function druapalsrudadminmodule_getModuleNamespaces()
+function drupalcrudadminmodule_getModuleNamespaces()
 {
     return array(
         'base' => '\\Liip\\Drupal\\Modules\\CrudAdmin',
