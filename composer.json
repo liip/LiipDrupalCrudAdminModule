@@ -27,7 +27,7 @@
         "liip/drupalconnectormodule": "dev-master",
         "liip/drupaleventmanagermodule": "dev-master",
         "liip/drupalregistrymodule": "dev-master",
-        "php": ">=5.3.8,<5.4"
+        "php": ">=5.3.8"
     },
 
     "require-dev": {
