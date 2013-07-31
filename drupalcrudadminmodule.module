@@ -8,10 +8,6 @@
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
-// unfortunately both file won't be included by the composer autoloader nor by the Drupal class registry.
-require_once __DIR__ . '/drupalcrudadminmodule.admin.inc';
-require_once __DIR__ . '/drupalcrudadminmodule.helper.inc';
-
 use Liip\Drupal\Modules\DrupalConnector\Common;
 use Liip\Drupal\Modules\DrupalConnector\ConnectorFactory;
 use Liip\Drupal\Modules\EventManager\EventManagerException;
@@ -45,7 +41,6 @@ function drupalcrudadminmodule_menu()
         'page arguments'   => array(4, 5, '', 'overview', $factory),
         'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'administer', $factory),
-        'file'             => 'drupalcrudadminmodule.admin.inc',
     );
 
     /**
@@ -62,7 +57,6 @@ function drupalcrudadminmodule_menu()
         'page arguments'   => array(4, 5, '', 6, $factory),
         'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'administer', $factory),
-        'file'             => 'drupalcrudadminmodule.admin.inc',
         'type'             => MENU_LOCAL_ACTION,
     );
 
@@ -82,7 +76,6 @@ function drupalcrudadminmodule_menu()
         'page arguments'   => array(4, 5, 6, 7, $factory),
         'access callback'  => 'drupalcrudadminmodule_access_controller',
         'access arguments' => array(4, 5, 'administer', $factory),
-        'file'             => 'drupalcrudadminmodule.admin.inc',
     );
 
     return $items;

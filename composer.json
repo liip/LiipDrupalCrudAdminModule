@@ -37,7 +37,8 @@
     "autoload": {
         "psr-0": {
             "Liip\\Drupal\\Modules\\CrudAdmin": "src"
-        }
+        },
+        "files": [ "drupalcrudadminmodule.admin.inc", "drupalcrudadminmodule.helper.inc" ]
     },
 
     "extra": {

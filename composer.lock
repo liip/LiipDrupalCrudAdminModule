@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "efeeef5a71675c5eb6249d7dc7d36b2f",
+    "hash": "87b7fd25aece96b21e122fca62e66131",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "v1.4"
+                "reference": "11a44345da7b33634be0f6c0e0507755e936a738"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/v1.4",
-                "reference": "v1.4",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/11a44345da7b33634be0f6c0e0507755e936a738",
+                "reference": "11a44345da7b33634be0f6c0e0507755e936a738",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2013-07-07 14:22:45"
+            "time": "2013-07-24 16:58:55"
         },
         {
             "name": "composer/installers",
@@ -169,12 +169,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalEventManagerModule.git",
-                "reference": "32c11df4af7dc0e88ad7dfff4c3cdef280cd0a8b"
+                "reference": "40ef61f698daf467a3a2f2b2ebabd470b0a2e050"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalEventManagerModule/zipball/32c11df4af7dc0e88ad7dfff4c3cdef280cd0a8b",
-                "reference": "32c11df4af7dc0e88ad7dfff4c3cdef280cd0a8b",
+                "url": "https://api.github.com/repos/liip/LiipDrupalEventManagerModule/zipball/40ef61f698daf467a3a2f2b2ebabd470b0a2e050",
+                "reference": "40ef61f698daf467a3a2f2b2ebabd470b0a2e050",
                 "shasum": ""
             },
             "require": {
@@ -228,7 +228,7 @@
                 "subject observer pattern",
                 "testing"
             ],
-            "time": "2013-07-04 14:05:45"
+            "time": "2013-07-17 08:56:33"
         },
         {
             "name": "liip/drupalregistrymodule",
@@ -236,17 +236,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalRegistryModule.git",
-                "reference": "cb00abe552d0a8dd3cc531a14c9be6b626e9f44c"
+                "reference": "674fbbe10dca45c83705c2039b818137d725e7e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalRegistryModule/zipball/cb00abe552d0a8dd3cc531a14c9be6b626e9f44c",
-                "reference": "cb00abe552d0a8dd3cc531a14c9be6b626e9f44c",
+                "url": "https://api.github.com/repos/liip/LiipDrupalRegistryModule/zipball/674fbbe10dca45c83705c2039b818137d725e7e3",
+                "reference": "674fbbe10dca45c83705c2039b818137d725e7e3",
                 "shasum": ""
             },
             "require": {
                 "beberlei/assert": "dev-master",
                 "liip/drupalconnectormodule": "dev-master",
+                "liip/registryadaptor": "dev-master",
                 "php": ">=5.3.8,<5.4",
                 "ruflin/elastica": "0.20.5.0.RC1"
             },
@@ -260,7 +261,8 @@
             "extra": {
                 "installer-paths": {
                     "vendor/liip/{$name}": [
-                        "liip/drupalconnectormodule"
+                        "liip/drupalconnectormodule",
+                        "liip/registryadaptor"
                     ]
                 }
             },
@@ -296,7 +298,61 @@
                 "registry",
                 "software quality"
             ],
-            "time": "2013-07-03 13:37:55"
+            "time": "2013-07-30 11:48:56"
+        },
+        {
+            "name": "liip/registryadaptor",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liip/LiipRegistryAdaptor.git",
+                "reference": "0feb97ca5d885cb88d42965a4bed2e696edece68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liip/LiipRegistryAdaptor/zipball/0feb97ca5d885cb88d42965a4bed2e696edece68",
+                "reference": "0feb97ca5d885cb88d42965a4bed2e696edece68",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "dev-master",
+                "php": ">=5.3.8,<5.4",
+                "ruflin/elastica": "0.20.5.0.RC1"
+            },
+            "require-dev": {
+                "lapistano/proxy-object": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Liip\\Registry\\Adaptor": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bastian Feder",
+                    "email": "bastian.feder@liip.ch",
+                    "role": "maintainer"
+                },
+                {
+                    "name": "Patrick Jezek",
+                    "email": "patrick.jezek@liip.ch",
+                    "role": "maintainer"
+                }
+            ],
+            "description": "This library extension provides a set of adaptors to the LiipDrupalRegistryModule.",
+            "keywords": [
+                "elasticsearch",
+                "loose coupling",
+                "ood",
+                "registry",
+                "software quality"
+            ],
+            "time": "2013-07-30 08:38:58"
         },
         {
             "name": "ruflin/elastica",
