@@ -28,7 +28,7 @@ function drupalcrudadminmodule_enable()
     $dcc = ConnectorFactory::getCommonConnector();
 
     $assertion = new Assertion();
-    $registry = new EventSubjects($dcc, $assertion);
+    $registry = new EventSubjects($assertion);
     $factory = new SubjectFactory($registry, $assertion);
 
     _drupalcrudadminmodule_initSubject('liip.crudadmin.actions.list', $factory, $dcc);
@@ -49,7 +49,7 @@ function drupalcrudadminmodule_disable()
     $dcc = ConnectorFactory::getCommonConnector();
 
     $assertion = new Assertion();
-    $registry = new EventSubjects($dcc, $assertion);
+    $registry = new EventSubjects($assertion);
 
     _drupalcrudadminmodule_unregisterEvent('liip.crudadmin.actions.list', $registry, $dcc);
     _drupalcrudadminmodule_unregisterEvent('liip.crudadmin.actions.create', $registry, $dcc);
