@@ -188,7 +188,7 @@ function _drupalcrudadminmodule_verify_existence_of_optional_callbacks($moduleNa
                 implode(', ', $warning)
             ),
             array(),
-            WATCHDOG_WARNING
+            WATCHDOG_INFO
         );
     }
 }
