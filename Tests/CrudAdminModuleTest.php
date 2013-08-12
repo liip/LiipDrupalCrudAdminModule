@@ -62,7 +62,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
                 $this->identicalTo('specialtestmodule'),
                 $this->identicalTo($message),
                 $this->isType('array'),
-                $this->identicalTo(4)
+                $this->identicalTo(WATCHDOG_INFO)
             );
 
         $dcm = $this->getDrupalModuleConnectorMock(array('module_hook'));

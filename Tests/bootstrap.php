@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('WATCHDOG_INFO')) {
+    define('WATCHDOG_INFO', 6);
+}
+
 if (!defined('WATCHDOG_NOTICE')) {
     define('WATCHDOG_NOTICE', 5);
 }
