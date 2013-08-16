@@ -4,7 +4,7 @@
     <div class="drupalcrudadminmodule-deletion-confirmation-description">
     <?php
         echo t(
-            'Do you really want to delete organisation "@name"?',
+            'Do you really want to delete "@name"?',
             array('@name' => t($entity->getTitle()))
         );
     ?>
