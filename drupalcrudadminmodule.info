@@ -7,3 +7,5 @@ version = 0.5
 php = 5.3
 
 dependencies[] = drupalconnectormodule
+dependencies[] = drupaleventmanagermodule
+dependencies[] = drupalregistrymodule
