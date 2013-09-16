@@ -10,6 +10,7 @@ of the current operation.
 
 [![Build Status](https://travis-ci.org/liip/LiipDrupalCrudAdminModule.png?branch=master)](https://travis-ci.org/liip/LiipDrupalCrudAdminModule)
 [![Dependency Status](https://www.versioneye.com/user/projects/52378e7f632bac522000f03a/badge.png)](https://www.versioneye.com/user/projects/52378e7f632bac522000f03a)
+[![Coverage Status](https://coveralls.io/repos/liip/LiipDrupalCrudAdminModule/badge.png)](https://coveralls.io/r/liip/LiipDrupalCrudAdminModule)
 
 ## Installation
 The source is now PSR-0 compatible. There is no specific installation routine to be followed. Just clone or checkout the source into to your project
