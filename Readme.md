@@ -6,9 +6,10 @@ Further it should provide a number of custom hooks to replace or enhance those o
 In addition it emits events after every major action (like: create, read, update, delete, and list) passing the complete scope
 of the current operation.
 
-## Current Travis Status
+## Current Repository Status
 
 [![Build Status](https://travis-ci.org/liip/LiipDrupalCrudAdminModule.png?branch=master)](https://travis-ci.org/liip/LiipDrupalCrudAdminModule)
+[![Dependency Status](https://www.versioneye.com/user/projects/52378e7f632bac522000f03a/badge.png)](https://www.versioneye.com/user/projects/52378e7f632bac522000f03a)
 
 ## Installation
 The source is now PSR-0 compatible. There is no specific installation routine to be followed. Just clone or checkout the source into to your project
