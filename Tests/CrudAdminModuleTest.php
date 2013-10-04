@@ -7,11 +7,13 @@
  * @copyright  Copyright (c) 2013 Liip Inc.
  */
 
-use Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface;
 use Liip\Drupal\Modules\drupalcrudadminmodule\Tests\CrudAdminModuleTestCase;
 
 class CrudAdminModuleTest extends CrudAdminModuleTestCase
 {
+    /**
+     * @covers ::_drupalcrudadminmodule_verify_existence_of_mandatory_callbacks
+     */
     public function testVerifyContractExpectingException()
     {
         $moduleName = 'specialtestmodule';
@@ -46,6 +48,9 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
         _drupalcrudadminmodule_verify_existence_of_mandatory_callbacks($moduleName, $entityName, $dcc, $dcm);
     }
 
+    /**
+     * @covers ::_drupalcrudadminmodule_verify_existence_of_optional_callbacks
+     */
     public function testVerifyContractExpectWarning()
     {
 
@@ -80,6 +85,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
 
     /**
      * @dataProvider generalTableHeaderVariablesDataprovider
+     * @covers ::_drupalcrudadminmodule_verify_existence_of_optional_callbacks
      */
     public function testGenerateTableHeaderVariables($expected, $rows, $tCount)
     {
@@ -123,6 +129,7 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
 
     /**
      * @dataProvider verifyFormDataprovider
+     * @covers ::_drupalcrudadminmodule_verify_existence_of_optional_callbacks
      */
     public function testVerifyFormExpectingException($form)
     {
@@ -138,5 +145,13 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
             'mandatory fields are not set' => array(array()),
             'at least one mandatory field are not set' => array(array('crud' => array('#moduleName' => 'tux'))),
         );
+    }
+
+    /**
+     * @covers ::drupalcrudadminmodule_getDestination
+     */
+    public function testGetDestination()
+    {
+        $this->markTestIncomplete('TBD');
     }
 }

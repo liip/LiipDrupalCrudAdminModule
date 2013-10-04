@@ -33,7 +33,7 @@ function _drupalcrudadminmodule_getDestination($moduleName, $entityName = '')
 
     if (empty($destination)) {
 
-        $path = (!empty($entityName)) ? $entityName.'/'.$moduleName : $moduleName;
+        $path = (!empty($entityName)) ? $moduleName.'/'.$entityName : $moduleName;
 
         $destination = !empty($_GET['destination']) ?
             $_GET['destination']
