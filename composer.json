@@ -15,6 +15,10 @@
             "name": "Patrick Jezek",
             "email": "patrick.jezek@liip.ch",
             "role": "maintainer"
+        },
+        {
+            "name": "List of contributors",
+            "homepage": "https://github.com/liip/LiipDrupalCRUDAdminModule/graphs/contributors"
         }
     ],
 
