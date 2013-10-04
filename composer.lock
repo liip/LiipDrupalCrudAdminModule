@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "87b7fd25aece96b21e122fca62e66131",
+    "hash": "3c7124227285bf98ca8d1f9fde40c5af",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "11a44345da7b33634be0f6c0e0507755e936a738"
+                "reference": "b01a2868fcebcefc14ce3ae240d5b2fbba1d7126"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/11a44345da7b33634be0f6c0e0507755e936a738",
-                "reference": "11a44345da7b33634be0f6c0e0507755e936a738",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/b01a2868fcebcefc14ce3ae240d5b2fbba1d7126",
+                "reference": "b01a2868fcebcefc14ce3ae240d5b2fbba1d7126",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2013-07-24 16:58:55"
+            "time": "2013-10-01 11:37:27"
         },
         {
             "name": "composer/installers",
@@ -116,17 +116,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalConnectorModule.git",
-                "reference": "64b179e1f7f23ac7a365725d18f40aa2f2329e08"
+                "reference": "dd258e7a49cb83711c48efb100965ecad510fa80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalConnectorModule/zipball/64b179e1f7f23ac7a365725d18f40aa2f2329e08",
-                "reference": "64b179e1f7f23ac7a365725d18f40aa2f2329e08",
+                "url": "https://api.github.com/repos/liip/LiipDrupalConnectorModule/zipball/dd258e7a49cb83711c48efb100965ecad510fa80",
+                "reference": "dd258e7a49cb83711c48efb100965ecad510fa80",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "v1.0.0",
-                "php": ">=5.3,<5.4"
+                "php": ">=5.3"
             },
             "type": "drupal-module",
             "autoload": {
@@ -148,6 +148,14 @@
                     "name": "Bastian Feder",
                     "email": "bastian.feder@liip.ch",
                     "role": "maintainer"
+                },
+                {
+                    "name": "Liip AG",
+                    "homepage": "http://liip.ch"
+                },
+                {
+                    "name": "List of Contributors",
+                    "homepage": "https://github.com/liip/LiipDrupalConnectorModule/graphs/contributors"
                 }
             ],
             "description": "The DrupalConnector Module is an abstraction layer to the Drupal 7 API of global functions in order to use them in an OOD setup.",
@@ -161,7 +169,7 @@
                 "software quality",
                 "testing"
             ],
-            "time": "2013-07-10 14:25:57"
+            "time": "2013-10-04 10:26:40"
         },
         {
             "name": "liip/drupaleventmanagermodule",
@@ -169,19 +177,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalEventManagerModule.git",
-                "reference": "40ef61f698daf467a3a2f2b2ebabd470b0a2e050"
+                "reference": "81345f02230a6eb5fe8432bfb7f6a72e8a979bf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalEventManagerModule/zipball/40ef61f698daf467a3a2f2b2ebabd470b0a2e050",
-                "reference": "40ef61f698daf467a3a2f2b2ebabd470b0a2e050",
+                "url": "https://api.github.com/repos/liip/LiipDrupalEventManagerModule/zipball/81345f02230a6eb5fe8432bfb7f6a72e8a979bf5",
+                "reference": "81345f02230a6eb5fe8432bfb7f6a72e8a979bf5",
                 "shasum": ""
             },
             "require": {
                 "beberlei/assert": "dev-master",
                 "liip/drupalconnectormodule": "dev-master",
                 "liip/drupalregistrymodule": "dev-master",
-                "php": ">=5.3.8,<5.4"
+                "php": ">=5.3.8"
             },
             "require-dev": {
                 "lapistano/proxy-object": "dev-master"
@@ -228,7 +236,7 @@
                 "subject observer pattern",
                 "testing"
             ],
-            "time": "2013-07-17 08:56:33"
+            "time": "2013-08-21 14:58:53"
         },
         {
             "name": "liip/drupalregistrymodule",
@@ -236,19 +244,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalRegistryModule.git",
-                "reference": "674fbbe10dca45c83705c2039b818137d725e7e3"
+                "reference": "f3c6d904d9ee9953c60821605386bf651c938f0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalRegistryModule/zipball/674fbbe10dca45c83705c2039b818137d725e7e3",
-                "reference": "674fbbe10dca45c83705c2039b818137d725e7e3",
+                "url": "https://api.github.com/repos/liip/LiipDrupalRegistryModule/zipball/f3c6d904d9ee9953c60821605386bf651c938f0c",
+                "reference": "f3c6d904d9ee9953c60821605386bf651c938f0c",
                 "shasum": ""
             },
             "require": {
                 "beberlei/assert": "dev-master",
                 "liip/drupalconnectormodule": "dev-master",
                 "liip/registryadaptor": "dev-master",
-                "php": ">=5.3.8,<5.4",
+                "php": ">=5.3.8",
                 "ruflin/elastica": "0.20.5.0.RC1"
             },
             "require-dev": {
@@ -298,7 +306,7 @@
                 "registry",
                 "software quality"
             ],
-            "time": "2013-07-30 11:48:56"
+            "time": "2013-09-23 15:49:21"
         },
         {
             "name": "liip/registryadaptor",
@@ -306,17 +314,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipRegistryAdaptor.git",
-                "reference": "0feb97ca5d885cb88d42965a4bed2e696edece68"
+                "reference": "53bff5c132db2d9a5236c61d2ad88b996c7e06ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipRegistryAdaptor/zipball/0feb97ca5d885cb88d42965a4bed2e696edece68",
-                "reference": "0feb97ca5d885cb88d42965a4bed2e696edece68",
+                "url": "https://api.github.com/repos/liip/LiipRegistryAdaptor/zipball/53bff5c132db2d9a5236c61d2ad88b996c7e06ce",
+                "reference": "53bff5c132db2d9a5236c61d2ad88b996c7e06ce",
                 "shasum": ""
             },
             "require": {
                 "beberlei/assert": "dev-master",
-                "php": ">=5.3.8,<5.4",
+                "php": ">=5.3.8",
                 "ruflin/elastica": "0.20.5.0.RC1"
             },
             "require-dev": {
@@ -352,7 +360,7 @@
                 "registry",
                 "software quality"
             ],
-            "time": "2013-07-30 08:38:58"
+            "time": "2013-08-22 10:02:54"
         },
         {
             "name": "ruflin/elastica",
@@ -461,7 +469,7 @@
         "lapistano/proxy-object": 20
     },
     "platform": {
-        "php": ">=5.3.8,<5.4"
+        "php": ">=5.3.8"
     },
     "platform-dev": [
 
