@@ -27,7 +27,7 @@
     },
 
     "require": {
-        "beberlei/assert": "dev-master",
+        "beberlei/assert": "~1.5",
         "liip/drupalconnectormodule": "dev-master",
         "liip/drupaleventmanagermodule": "dev-master",
         "liip/drupalregistrymodule": "dev-master",
