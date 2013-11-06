@@ -303,7 +303,7 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
             }
         }
     } else {
-        $rows = _drupalcrudadminmodule_inject_actions_column($rows, $moduleName, $identifier, $factory);
+        $rows = _drupalcrudadminmodule_inject_actions_column($rows, $moduleName, $entityName, $identifier, $factory);
     }
 
     $form['overview'] = array(
@@ -342,7 +342,12 @@ function _drupalcrudadminmodule_inject_actions_column(array $rows, $moduleName, 
 
     foreach ($rows as $row) {
 
-        $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entity, $dcc);
+        $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column(
+            $moduleName,
+            $entityName,
+            $entity,
+            $dcc
+        );
     }
 
     return $rows;
