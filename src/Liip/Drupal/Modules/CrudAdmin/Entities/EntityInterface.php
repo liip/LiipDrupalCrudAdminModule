@@ -19,13 +19,6 @@ interface EntityInterface {
     public function getId();
 
     /**
-     * Provides the long description of an entity.
-     *
-     * @return string
-     */
-    public function getDescription();
-
-    /**
      * Provides the name or title of the entity.
      *
      * @return string
