@@ -152,6 +152,25 @@ class CrudAdminModuleTest extends CrudAdminModuleTestCase
      */
     public function testGetDestination()
     {
-        $this->markTestIncomplete('TBD');
+        $moduleName = 'exampleModule';
+        $entityName = 'exampleEntity';
+
+        $module = $this->getDrupalModuleConnectorMock(array('module_invoke'));
+        $module
+            ->expects($this->once())
+            ->method('module_invoke')
+            ->with(
+                $this->equalTo($moduleName),
+                $this->isType('string')
+            )
+            ->will($this->returnValue('<front>'));
+
+        $factory = $this->getDrupalConnectorFactoryMock(array('getModuleConnector'));
+        $factory
+            ->staticExpects($this->once())
+            ->method('getModuleConnector')
+            ->will($this->returnValue($module));
+
+        $this->assertEquals('<front>', drupalcrudadminmodule_getDestination($moduleName, $entityName, $factory));
     }
 }
