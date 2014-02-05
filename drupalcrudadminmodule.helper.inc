@@ -19,16 +19,16 @@ use Liip\Drupal\Modules\DrupalConnector\Module;
  *
  * @param string $moduleName
  * @param string $entityName
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @group optionalCustomHooks
  * @return string
- *
  * @see ${moduleName}_getDestination()
  */
-function _drupalcrudadminmodule_getDestination($moduleName, $entityName = '')
+function drupalcrudadminmodule_getDestination($moduleName, $entityName = '', ConnectorFactory $factory)
 {
     // check for a custom hook_getDestination() ans if there is one, use this instead.
-    $destination = ConnectorFactory::getModuleConnector()
+    $destination = $factory->getModuleConnector()
         ->module_invoke($moduleName, 'getDestination');
 
     if (empty($destination)) {
@@ -199,17 +199,32 @@ function _drupalcrudadminmodule_verify_existence_of_optional_callbacks($moduleNa
  * @param string $moduleName
  * @param string $entityName
  * @param Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
- * @param Liip\Drupal\Modules\DrupalConnector\Common $dcc
- * @param Liip\Drupal\Modules\DrupalConnector\Module $dcm
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @return array
  */
-function _drupalcrudadminmodule_create_entity_table_row($moduleName, $entityName, EntityInterface $entity, Common $dcc, Module $dcm)
+function _drupalcrudadminmodule_create_entity_table_row($moduleName, $entityName, EntityInterface $entity, ConnectorFactory $factory)
 {
-    $row = array();
-    $row['title'] = $dcc->t($entity->getTitle());
-    $row['description'] = $dcc->t($entity->getDescription());
-    $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entityName, $entity, $dcc);
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
+    $dcc = $factory->getCommonConnector();
+
+    $row = array(
+        'title' => '',
+        'description' => '',
+        'actions' => ''
+    );
+
+    try {
+        $row['title'] = $dcc->t($entity->getTitle());
+        $row['description'] = $dcc->t($entity->getDescription());
+        $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entityName, $entity, $factory);
+
+    } catch (Exception $e) {
+
+        $dcc->watchdog('drupalcrudadminmdule', $e->getMessage(), array(), WATCHDOG_CRITICAL);
+
+        $row['description'] = $e->getMessage();
+    }
 
     return $row;
 }
@@ -220,17 +235,20 @@ function _drupalcrudadminmodule_create_entity_table_row($moduleName, $entityName
  * @param string $moduleName
  * @param string $entityName
  * @param Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity
- * @param Liip\Drupal\Modules\DrupalConnector\Common $dcc
+ * @param Liip\Drupal\Modules\DrupalConnector\ConnectorFactory $factory
  *
  * @return string
  */
-function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entityName, EntityInterface $entity, Common $dcc)
+function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entityName, EntityInterface $entity, ConnectorFactory $factory)
 {
-    $destination = _drupalcrudadminmodule_getDestination($moduleName, $entityName);
+    $destination = drupalcrudadminmodule_getDestination($moduleName, $entityName, $factory);
+
+    /** @var \Liip\Drupal\Modules\DrupalConnector\Common $dcc */
+    $dcc = $factory->getCommonConnector();
 
     return sprintf(
         '<div class="table-item-action-wrapper">%s %s</div>',
-        $dcc->l(
+        $factory->l(
             $dcc->t('edit'),
             sprintf(
                 'admin/config/content/crud/%s/%s/%s/edit',
@@ -242,7 +260,7 @@ function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, 
                 'query' => array('destination' => $destination)
             )
         ),
-        $dcc->l(
+        $factory->l(
             $dcc->t('delete'),
             sprintf(
                 'admin/config/content/crud/%s/%s/%s/delete',
@@ -299,7 +317,7 @@ function _drupalcrudadminmodule_generateOverviewTable(array $form, $moduleName, 
 
             /** @var Liip\Drupal\Modules\CrudAdmin\Entities\EntityInterface $entity */
             foreach ($entities as $registrationKey => $entity) {
-                $rows[$entity->getId()] = _drupalcrudadminmodule_create_entity_table_row($moduleName, $entityName, $entity, $dcc, $dcm);
+                $rows[$entity->getId()] = _drupalcrudadminmodule_create_entity_table_row($moduleName, $entityName, $entity, $factory);
             }
         }
     } else {
@@ -342,7 +360,7 @@ function _drupalcrudadminmodule_inject_actions_column(array $rows, $moduleName, 
 
     foreach ($rows as $row) {
 
-        $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entity, $dcc);
+        $row['actions'] = _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, $entity, $factory);
     }
 
     return $rows;
@@ -416,7 +434,7 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
 
         if (empty($entity)) {
             $form['#markup'] = $dcc->t('LIIP_DRUPAL_CRUD_ADMIN_MODULE_NO_ENTITY', array('%entity' => $entityName));
-            $form['#redirect'] = _drupalcrudadminmodule_getDestination($moduleName, $entityName);
+            $form['#redirect'] = drupalcrudadminmodule_getDestination($moduleName, $entityName, $factory);
 
             return $form;
         }
@@ -472,10 +490,10 @@ function _drupalcrudaminmodule_generate_modification_form($moduleName, $entityNa
     );
 
     $form['cancel'] = array(
-        "#markup" => $dcc->l($dcc->t('Cancel'), _drupalcrudadminmodule_getDestination($moduleName, $entityName))
+        "#markup" => $dcc->l($dcc->t('Cancel'), drupalcrudadminmodule_getDestination($moduleName, $entityName, $factory))
     );
 
-    $form['#redirect'] = _drupalcrudadminmodule_getDestination($moduleName, $entityName);
+    $form['#redirect'] = drupalcrudadminmodule_getDestination($moduleName, $entityName, $factory);
 
     return $form;
 }

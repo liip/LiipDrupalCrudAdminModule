@@ -77,7 +77,7 @@ function drupalcrudadminmodule_delete_form($moduleName, $entityName, $identifier
         }
 
         // this should send you back to where you came from.
-        $dcc->drupal_goto(_drupalcrudadminmodule_getDestination($moduleName, $entityName));
+        $dcc->drupal_goto(drupalcrudadminmodule_getDestination($moduleName, $entityName, $factory));
 
     } else {
 
