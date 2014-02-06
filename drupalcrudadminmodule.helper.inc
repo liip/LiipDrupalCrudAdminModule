@@ -248,7 +248,7 @@ function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, 
 
     return sprintf(
         '<div class="table-item-action-wrapper">%s %s</div>',
-        $factory->l(
+        $dcc->l(
             $dcc->t('edit'),
             sprintf(
                 'admin/config/content/crud/%s/%s/%s/edit',
@@ -260,7 +260,7 @@ function _drupalcrudadminmdule_generate_entity_table_action_column($moduleName, 
                 'query' => array('destination' => $destination)
             )
         ),
-        $factory->l(
+        $dcc->l(
             $dcc->t('delete'),
             sprintf(
                 'admin/config/content/crud/%s/%s/%s/delete',
