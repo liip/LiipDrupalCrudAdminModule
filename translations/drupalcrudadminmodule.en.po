@@ -22,5 +22,11 @@ msgstr "Enter the translation key pointing to title of the entity. The translati
 msgid 'LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_TITLE'
 msgstr "Title of the %entity"
 
+msgid 'LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_NAME'
+msgstr "Title of the %entity"
+
+msgid 'LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_DESCRIPTION'
+msgstr "Description of the %entity"
+
 msgid "LIIP_DRUPAL_CRUD_ADMIN_MODULE_ADD_ENTITY_DESCRIPTION_TITLE"
 msgstr "Description"
