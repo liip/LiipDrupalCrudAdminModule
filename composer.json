@@ -30,7 +30,7 @@
         "beberlei/assert": "~1.5",
         "liip/drupalconnectormodule": "dev-master",
         "liip/drupaleventmanagermodule": "dev-master",
-        "liip/drupalregistrymodule": "dev-master",
+        "liip/drupalregistrymodule": "1.4.0.x-dev",
         "php": ">=5.3.8"
     },
 
