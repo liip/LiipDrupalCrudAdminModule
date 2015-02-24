@@ -1,22 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "3c7124227285bf98ca8d1f9fde40c5af",
+    "hash": "75d1db72ad25b44997983299b15eccd2",
     "packages": [
         {
             "name": "beberlei/assert",
-            "version": "dev-master",
+            "version": "v1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "b01a2868fcebcefc14ce3ae240d5b2fbba1d7126"
+                "reference": "97515db6b6c8fb254f5c3ce5730cdfa5a1e3fbf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/b01a2868fcebcefc14ce3ae240d5b2fbba1d7126",
-                "reference": "b01a2868fcebcefc14ce3ae240d5b2fbba1d7126",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/97515db6b6c8fb254f5c3ce5730cdfa5a1e3fbf4",
+                "reference": "97515db6b6c8fb254f5c3ce5730cdfa5a1e3fbf4",
                 "shasum": ""
             },
             "require": {
@@ -44,20 +45,20 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2013-10-01 11:37:27"
+            "time": "2014-01-25 08:48:48"
         },
         {
             "name": "composer/installers",
             "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/composer/installers",
-                "reference": "v1.0.0"
+                "url": "https://github.com/composer/installers.git",
+                "reference": "eae5f43226c8a3c7b98887c34287772cf227c275"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/composer/installers/archive/v1.0.0.zip",
-                "reference": "v1.0.0",
+                "url": "https://api.github.com/repos/composer/installers/zipball/eae5f43226c8a3c7b98887c34287772cf227c275",
+                "reference": "eae5f43226c8a3c7b98887c34287772cf227c275",
                 "shasum": ""
             },
             "replace": {
@@ -83,7 +84,7 @@
                 {
                     "name": "Kyle Robinson Young",
                     "email": "kyle@dontkry.com",
-                    "homepage": "http://dontkry.com",
+                    "homepage": "https://github.com/shama",
                     "role": "Developer"
                 }
             ],
@@ -116,12 +117,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalConnectorModule.git",
-                "reference": "dd258e7a49cb83711c48efb100965ecad510fa80"
+                "reference": "3aa952e12378070a85e15c58239e918636ab34ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalConnectorModule/zipball/dd258e7a49cb83711c48efb100965ecad510fa80",
-                "reference": "dd258e7a49cb83711c48efb100965ecad510fa80",
+                "url": "https://api.github.com/repos/liip/LiipDrupalConnectorModule/zipball/3aa952e12378070a85e15c58239e918636ab34ba",
+                "reference": "3aa952e12378070a85e15c58239e918636ab34ba",
                 "shasum": ""
             },
             "require": {
@@ -169,30 +170,31 @@
                 "software quality",
                 "testing"
             ],
-            "time": "2013-10-04 10:26:40"
+            "time": "2014-09-09 11:38:32"
         },
         {
             "name": "liip/drupaleventmanagermodule",
-            "version": "dev-master",
+            "version": "1.4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalEventManagerModule.git",
-                "reference": "81345f02230a6eb5fe8432bfb7f6a72e8a979bf5"
+                "reference": "fe67a2beb75395410df690229ccafc97e812d5c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalEventManagerModule/zipball/81345f02230a6eb5fe8432bfb7f6a72e8a979bf5",
-                "reference": "81345f02230a6eb5fe8432bfb7f6a72e8a979bf5",
+                "url": "https://api.github.com/repos/liip/LiipDrupalEventManagerModule/zipball/fe67a2beb75395410df690229ccafc97e812d5c9",
+                "reference": "fe67a2beb75395410df690229ccafc97e812d5c9",
                 "shasum": ""
             },
             "require": {
-                "beberlei/assert": "dev-master",
+                "beberlei/assert": "~1.5",
                 "liip/drupalconnectormodule": "dev-master",
-                "liip/drupalregistrymodule": "dev-master",
+                "liip/drupalregistrymodule": "1.4.0.x-dev",
                 "php": ">=5.3.8"
             },
             "require-dev": {
-                "lapistano/proxy-object": "dev-master"
+                "lapistano/proxy-object": "dev-master",
+                "satooshi/php-coveralls": "dev-master"
             },
             "type": "drupal-module",
             "extra": {
@@ -222,6 +224,10 @@
                     "name": "Patrick Jezek",
                     "email": "patrick.jezek@liip.ch",
                     "role": "maintainer"
+                },
+                {
+                    "name": "List of contributors",
+                    "homepage": "https://github.com/liip/LiipDrupalEventManagerModule/graphs/contributors"
                 }
             ],
             "description": "Event manager to enhance the Drupal hook system (actually use it for you custom events instead of the hook system)",
@@ -236,28 +242,27 @@
                 "subject observer pattern",
                 "testing"
             ],
-            "time": "2013-08-21 14:58:53"
+            "time": "2015-02-24 08:42:24"
         },
         {
             "name": "liip/drupalregistrymodule",
-            "version": "dev-master",
+            "version": "1.4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalRegistryModule.git",
-                "reference": "f3c6d904d9ee9953c60821605386bf651c938f0c"
+                "reference": "e4dd8f5f8142d0d5829fb1f66404179f454fe2c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalRegistryModule/zipball/f3c6d904d9ee9953c60821605386bf651c938f0c",
-                "reference": "f3c6d904d9ee9953c60821605386bf651c938f0c",
+                "url": "https://api.github.com/repos/liip/LiipDrupalRegistryModule/zipball/e4dd8f5f8142d0d5829fb1f66404179f454fe2c8",
+                "reference": "e4dd8f5f8142d0d5829fb1f66404179f454fe2c8",
                 "shasum": ""
             },
             "require": {
-                "beberlei/assert": "dev-master",
+                "beberlei/assert": "~1.5",
                 "liip/drupalconnectormodule": "dev-master",
-                "liip/registryadaptor": "dev-master",
-                "php": ">=5.3.8",
-                "ruflin/elastica": "0.20.5.0.RC1"
+                "liip/registryadaptor": "1.4.0.x-dev",
+                "php": ">=5.3.8"
             },
             "require-dev": {
                 "lapistano/proxy-object": "dev-master"
@@ -293,6 +298,10 @@
                     "name": "Patrick Jezek",
                     "email": "patrick.jezek@liip.ch",
                     "role": "maintainer"
+                },
+                {
+                    "name": "List of contributors",
+                    "homepage": "https://github.com/liip/LiipDrupalRegistryModule/graphs/contributors"
                 }
             ],
             "description": "This module provides an API to by used to persist/cache information.",
@@ -306,26 +315,26 @@
                 "registry",
                 "software quality"
             ],
-            "time": "2013-09-23 15:49:21"
+            "time": "2015-02-23 16:15:42"
         },
         {
             "name": "liip/registryadaptor",
-            "version": "dev-master",
+            "version": "1.4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipRegistryAdaptor.git",
-                "reference": "53bff5c132db2d9a5236c61d2ad88b996c7e06ce"
+                "reference": "fbcf99bc936126c44392377e661b0aa1e72e8072"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipRegistryAdaptor/zipball/53bff5c132db2d9a5236c61d2ad88b996c7e06ce",
-                "reference": "53bff5c132db2d9a5236c61d2ad88b996c7e06ce",
+                "url": "https://api.github.com/repos/liip/LiipRegistryAdaptor/zipball/fbcf99bc936126c44392377e661b0aa1e72e8072",
+                "reference": "fbcf99bc936126c44392377e661b0aa1e72e8072",
                 "shasum": ""
             },
             "require": {
-                "beberlei/assert": "dev-master",
+                "beberlei/assert": "~1.5",
                 "php": ">=5.3.8",
-                "ruflin/elastica": "0.20.5.0.RC1"
+                "ruflin/elastica": "v1.4.3.0"
             },
             "require-dev": {
                 "lapistano/proxy-object": "dev-master"
@@ -360,42 +369,95 @@
                 "registry",
                 "software quality"
             ],
-            "time": "2013-08-22 10:02:54"
+            "time": "2015-02-23 16:13:07"
         },
         {
-            "name": "ruflin/elastica",
-            "version": "v0.20.5.0.RC1",
+            "name": "psr/log",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "v0.20.5.0.RC1"
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "1af1529b49a6e065ae6802e70192aba35d79b7d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/v0.20.5.0.RC1",
-                "reference": "v0.20.5.0.RC1",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/1af1529b49a6e065ae6802e70192aba35d79b7d8",
+                "reference": "1af1529b49a6e065ae6802e70192aba35d79b7d8",
                 "shasum": ""
             },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "munkie/elasticsearch-thrift-php": "1.4.*",
-                "phpunit/phpunit": "3.7.*"
-            },
-            "suggest": {
-                "munkie/elasticsearch-thrift-php": "Allow using thrift transport"
-            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
-                    "Elastica": "lib/",
-                    "Elastica\\Test": "test/lib/"
+                    "Psr\\Log\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache 2.0"
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2015-02-05 09:32:11"
+        },
+        {
+            "name": "ruflin/elastica",
+            "version": "v1.4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ruflin/Elastica.git",
+                "reference": "bfa9363bf2aa62af5907135863661c6c78a68ee4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/bfa9363bf2aa62af5907135863661c6c78a68ee4",
+                "reference": "bfa9363bf2aa62af5907135863661c6c78a68ee4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "psr/log": "~1.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "~1.4",
+                "munkie/elasticsearch-thrift-php": "1.4.*",
+                "phpunit/phpunit": "4.1.*"
+            },
+            "suggest": {
+                "egeloen/http-adapter": "Allow using httpadapter transport",
+                "guzzlehttp/guzzle": "Allow using guzzle 4.x as the http transport (Requires php 5.4)",
+                "monolog/monolog": "Logging request",
+                "munkie/elasticsearch-thrift-php": "Allow using thrift transport"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Elastica\\": "lib/Elastica/",
+                    "Elastica\\Test\\": "test/lib/Elastica/Test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
             ],
             "authors": [
                 {
@@ -404,12 +466,12 @@
                 }
             ],
             "description": "Elasticsearch Client",
-            "homepage": "http://ruflin.github.com/Elastica/",
+            "homepage": "http://elastica.io/",
             "keywords": [
                 "client",
                 "search"
             ],
-            "time": "2013-02-20 20:09:46"
+            "time": "2015-02-17 19:57:36"
         }
     ],
     "packages-dev": [
@@ -419,16 +481,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lapistano/proxy-object.git",
-                "reference": "bf26e21c32bd938f75c4ad43e10b65c1925f76a0"
+                "reference": "d3052830412c1526380c4b97d982a4bce80c9de8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lapistano/proxy-object/zipball/bf26e21c32bd938f75c4ad43e10b65c1925f76a0",
-                "reference": "bf26e21c32bd938f75c4ad43e10b65c1925f76a0",
+                "url": "https://api.github.com/repos/lapistano/proxy-object/zipball/d3052830412c1526380c4b97d982a4bce80c9de8",
+                "reference": "d3052830412c1526380c4b97d982a4bce80c9de8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "@stable"
             },
             "type": "library",
             "autoload": {
@@ -454,24 +519,21 @@
                 "proxy-object",
                 "testing"
             ],
-            "time": "2013-06-18 14:58:18"
+            "time": "2014-07-11 12:51:34"
         }
     ],
-    "aliases": [
-
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "beberlei/assert": 20,
         "liip/drupalconnectormodule": 20,
         "liip/drupaleventmanagermodule": 20,
         "liip/drupalregistrymodule": 20,
         "lapistano/proxy-object": 20
     },
+    "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.8"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }
