@@ -250,12 +250,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipDrupalRegistryModule.git",
-                "reference": "e4dd8f5f8142d0d5829fb1f66404179f454fe2c8"
+                "reference": "212d69af7d4d65e1de0c567c841ddcd4741006a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipDrupalRegistryModule/zipball/e4dd8f5f8142d0d5829fb1f66404179f454fe2c8",
-                "reference": "e4dd8f5f8142d0d5829fb1f66404179f454fe2c8",
+                "url": "https://api.github.com/repos/liip/LiipDrupalRegistryModule/zipball/212d69af7d4d65e1de0c567c841ddcd4741006a0",
+                "reference": "212d69af7d4d65e1de0c567c841ddcd4741006a0",
                 "shasum": ""
             },
             "require": {
@@ -315,7 +315,7 @@
                 "registry",
                 "software quality"
             ],
-            "time": "2015-02-23 16:15:42"
+            "time": "2015-02-24 09:20:32"
         },
         {
             "name": "liip/registryadaptor",
