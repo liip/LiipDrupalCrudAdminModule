@@ -29,8 +29,8 @@
     "require": {
         "beberlei/assert": "~1.5",
         "liip/drupalconnectormodule": "dev-master",
-        "liip/drupaleventmanagermodule": "1.4.0.x-dev",
-        "liip/drupalregistrymodule": "1.4.0.x-dev",
+        "liip/drupaleventmanagermodule": "1.4.*",
+        "liip/drupalregistrymodule": "1.4.*",
         "php": ">=5.3.8"
     },
 
